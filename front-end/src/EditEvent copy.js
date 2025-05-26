@@ -23,15 +23,10 @@ const EditEvent = () => {
     setEventData({ ...eventData, [e.target.name]: e.target.value });
   };
 
-  const API_URL =
-        window.location.hostname === "localhost"
-          ? "http://localhost:4000"
-          : "https://morningping.onrender.com";
-
   const handleSubmit = (e) => {
     e.preventDefault();
     // Envoie les modifications vers le backend
-    fetch(`${API_URL}/api/events/${id}`, {
+    fetch(`http://localhost:4000/api/events/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(eventData),

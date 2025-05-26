@@ -19,8 +19,12 @@ const Home = () => {
 //       });
 //   }, []);
     const [events, setEvents] = useState([]);
+      const API_URL =
+        window.location.hostname === "localhost"
+          ? "http://localhost:4000"
+          : "https://morningping.onrender.com";
     useEffect(() => {
-    fetch('http://localhost:4000/', {
+    fetch(`${API_URL}/`, {
       credentials: 'include' // si tu utilises des cookies (sessions)
     })
       .then(res => res.json())

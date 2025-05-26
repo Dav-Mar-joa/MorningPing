@@ -19,8 +19,13 @@ const AddEvent = () => {
       date: eventDate,
     };
 
+
     try {
-      const response = await fetch('http://localhost:4000/api/events', {  // adapter l'URL à ton backend
+      const API_URL =
+        window.location.hostname === "localhost"
+          ? "http://localhost:4000"
+          : "https://morningping.onrender.com";
+      const response = await fetch(`${API_URL}/api/events`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
