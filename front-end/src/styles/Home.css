@@ -1,0 +1,242 @@
+/* -----------------------
+   Global Page Styles
+------------------------ */
+body {
+  margin: 0;
+  padding: 0;
+   font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(145deg, #ffe4b5, #fff8dc);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  /* padding-top: 3rem; */
+}
+
+/* -----------------------
+   Container Principal
+------------------------ */
+.home-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 3rem;
+  text-align: center;
+}
+
+.home-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #d2691e;
+  text-shadow: 1px 1px 0 #fff;
+}
+
+/* -----------------------
+   Liste des Post-it
+------------------------ */
+.postit-list {
+  position: relative; /* important pour que ::before soit bien placé */
+  border: 1px solid black;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  padding: 2rem;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.6);
+  /* background: linear-gradient(145deg, #2c2f38, #1b4bac, #2b2f36); */
+  background: linear-gradient(145deg, #6a758a, #8a9cdc, #6273a1);
+  overflow: hidden; /* pour que la texture ne dépasse pas */
+}
+
+.postit-list::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://www.transparenttextures.com/patterns/dark-denim.png');
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 1; /* bien derrière le contenu */
+}
+
+/* Pour que le contenu passe devant la texture */
+.postit-list > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* -----------------------
+   Carte style Post-it
+------------------------ */
+.postit-card {
+  /* margin-top: 1rem; */
+  background: #fff47a;
+  width: 90%;
+  max-width: 320px;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  transform: rotate(-2deg);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.postit-card:first-child {
+    margin-top: 2rem;
+}
+.postit-card:last-child {
+    margin-bottom: 2rem;
+}
+
+.postit-card::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  width: 30px;
+  height: 30px;
+  background: #e41717;
+  border-radius: 50%;
+  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.postit-card:hover {
+  transform: rotate(0deg) scale(1.06);
+  box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.25);
+  background: #e6b371;
+}
+
+/* -----------------------
+   Contenu des cartes
+------------------------ */
+.postit-card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  color: #5a3e00;
+}
+
+.postit-card p {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #333;
+}
+
+/* Conteneur des boutons */
+.boutons {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.editEvent{
+    display:flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+/* Style général des boutons */
+.btn {
+  background: #ffdd57;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  font-size: 1.3rem;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  color: #5a3e00;
+  cursor: pointer;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  transform: rotate(-1deg);
+}
+
+.btn:hover {
+  background: #ffe97f;
+  transform: rotate(0deg) scale(1.05);
+  box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.25);
+}
+
+.btn:active {
+  transform: scale(0.97);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Style général des boutons */
+.btn-edit {
+  background: #ffdd57;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-right: 1rem;
+  font-size: 1.3rem;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  color: #5a3e00;
+  cursor: pointer;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  transform: rotate(-1deg);
+}
+
+.btn-edit:hover {
+  background: #ffe97f;
+  transform: rotate(0deg) scale(1.05);
+  box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.25);
+}
+
+.btn-edit:active {
+  transform: scale(0.97);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Style logout */
+.btn-logout {
+  background: #75aee2;
+  border: 1px solid #817d79;
+  border-radius: 25px;
+  padding: 0.2rem 1.3rem;
+  font-size: 1.3rem;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  color: #5a3e00;
+  cursor: pointer;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  transform: rotate(-1deg);
+}
+
+.btn-logout:hover {
+  background: #ffe97f;
+  transform: rotate(0deg) scale(1.05);
+  box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.25);
+}
+
+.btn-logout:active {
+  transform: scale(0.97);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+            
+.imputAddEvent {
+  width: 90%;
+  max-width: 350px;
+  padding: 0.8rem 1rem;
+  margin: 0.8rem 0;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-size: 1.2rem;
+  border: 2px solid #5a3e00;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+  background-color: #fff8dc;
+  color: #5a3e00;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.imputAddEvent:focus {
+  outline: none;
+  border-color: #d2691e;
+  box-shadow: 0 0 8px #d2691e;
+  background-color: #fffbea;
+}
