@@ -240,3 +240,54 @@ body {
   box-shadow: 0 0 8px #d2691e;
   background-color: #fffbea;
 }
+
+/* -----------------------
+   Responsive Mobile Styles
+------------------------ */
+@media screen and (max-width: 600px) {
+  .home-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .home-container h1 {
+    font-size: 1.6rem;
+  }
+
+  .postit-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 1rem;
+    transform: none;
+  }
+
+  .postit-card:hover {
+    transform: scale(1.02);
+  }
+
+  .boutons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .btn,
+  .btn-edit,
+  .btn-logout {
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .editEvent {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .imputAddEvent {
+    font-size: 1rem;
+    padding: 0.6rem 0.8rem;
+    width: 100%;
+  }
+}
+
