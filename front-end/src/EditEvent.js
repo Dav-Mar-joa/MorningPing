@@ -8,10 +8,14 @@ const EditEvent = () => {
    const navigate = useNavigate();
   // Simuler une récupération de données (à remplacer par une vraie requête)
   useEffect(() => {
+    const API_URL =
+        window.location.hostname === "localhost"
+          ? "http://localhost:4000"
+          : "https://morningping.onrender.com";
     // Remplacer ceci par une requête à la base ou au backend
     const fetchData = async () => {
       // Exemple fictif
-      const response = await fetch(`/api/events/${id}`);
+      const response = await fetch(`${API_URL}/api/events/${id}`);
       const data = await response.json();
       setEventData({ nom: data.event, date: data.date });
     };

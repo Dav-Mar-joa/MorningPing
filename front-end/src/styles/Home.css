@@ -18,8 +18,8 @@ body {
    Container Principal
 ------------------------ */
 .home-container {
-  width: 100%;
-  max-width: 1000px;
+  width: 90%;
+  /* max-width: 1000px; */
   margin: 0 auto;
   padding: 3rem;
   text-align: center;
@@ -44,6 +44,8 @@ body {
   gap: 2rem;
   align-items: center;
   padding: 2rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
   box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.6);
   /* background: linear-gradient(145deg, #2c2f38, #1b4bac, #2b2f36); */
@@ -76,7 +78,7 @@ body {
   /* margin-top: 1rem; */
   background: #fff47a;
   width: 90%;
-  max-width: 320px;
+  max-width: 210px;
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);

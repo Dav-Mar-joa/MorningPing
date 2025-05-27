@@ -39,7 +39,7 @@ const Home = () => {
     <div className='home-container'>
       <div className='boutons'>
         <Link to="/AddEvent">
-          <button className='btn'>Ajouter un event</button>
+          <button className='btn'> ➕ event</button>
         </Link>
         <button className='btn-logout'>
           <img src="/logout.png" alt="Déconnexion" style={{ width: '45px', height: '45px' }} />
