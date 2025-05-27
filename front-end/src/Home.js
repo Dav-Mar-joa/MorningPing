@@ -45,7 +45,7 @@ const Home = () => {
           <img src="/logout.png" alt="Déconnexion" style={{ width: '45px', height: '45px' }} />
         </button>
       </div>
-      <h1>⏰ Morning Ping</h1>
+      <h1>⏰ Morning Ping 🔔</h1>
       <div className="postit-list">
         {events.map((event, index) => (
           <AnniversaireCard

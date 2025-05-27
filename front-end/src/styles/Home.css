@@ -6,13 +6,43 @@ body {
   padding: 0;
   width: 100%;
    font-family: 'Comic Sans MS', cursive, sans-serif;
-  background: linear-gradient(145deg, #ffe4b5, #fff8dc);
+  /* background: linear-gradient(145deg, #ffe4b5, #fff8dc); */
+  background-color: #7B3F00; /* couleur base brique un peu rouille */
+  background-image:
+    linear-gradient(90deg, rgba(255,255,255,0.1) 50%, transparent 50%),
+    linear-gradient(rgba(255,255,255,0.1) 50%, transparent 50%);
+  background-size: 90px 40px;
+  background-position: 0 0, 20px 20px;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   /* padding-top: 3rem; */
 }
+
+body {
+  /* Couleur de fond principale ton thon (gris bleuté) */
+  background-color: #6df8a2;
+
+  /* Pattern arabesque SVG en background */
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><path fill="none" stroke="%23a7b1bb" stroke-width="2" d="M30 10 Q60 40 90 10 M30 110 Q60 80 90 110 M10 30 Q40 60 10 90 M110 30 Q80 60 110 90"/></svg>');
+
+  background-repeat: repeat;
+  background-size: 100px 100px;
+
+  /* Overlay sombre semi-transparent pour contraste */
+  position: relative;
+}
+
+/* body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  background: rgba(118, 153, 189, 0.7);
+  backdrop-filter: blur(10px);
+  z-index: -1;
+} */
 
 /* -----------------------
    Container Principal
@@ -247,7 +277,7 @@ body {
 /* -----------------------
    Responsive Mobile Styles
 ------------------------ */
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 480px) {
   .home-container {
     padding: 1.5rem 1rem;
   }
