@@ -1,9 +1,0 @@
-PORT=4000
-MONGODB_HOST=localhost
-MONGODB_PORT=27017
-MONGODB_DBNAME=MorningPing
-MONGODB_COLLECTION=users
-MONGODB_URI="mongodb+srv://davidjoaquimmartins:david@clusterd.gllspzx.mongodb.net/MorningPing?retryWrites=true&w=majority"
-NODE_ENV=production
-JWT_SECRET=MorningPing
-SECRET_KEY=f51b5ea48aa6f6ef7b2389a6c6dde30e1e9266eb521ad45e3ce9fc74bc86fdad
