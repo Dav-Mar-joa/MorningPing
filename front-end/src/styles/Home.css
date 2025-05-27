@@ -18,10 +18,10 @@ body {
    Container Principal
 ------------------------ */
 .home-container {
-  width: 95%;
+  width: 90%;
   /* max-width: 1000px; */
   margin: 0 auto;
-  padding: 3rem;
+  padding: 1rem;
   text-align: center;
 }
 
