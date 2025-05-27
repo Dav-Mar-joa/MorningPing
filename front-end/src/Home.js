@@ -34,7 +34,7 @@ const Home = () => {
       .catch(err => {
         console.error('Erreur lors du fetch des événements :', err);
       });
-    })
+    },[])
   return (
     <div className='home-container'>
       <div className='boutons'>

@@ -4,6 +4,7 @@
 body {
   margin: 0;
   padding: 0;
+  width: 100%;
    font-family: 'Comic Sans MS', cursive, sans-serif;
   background: linear-gradient(145deg, #ffe4b5, #fff8dc);
   min-height: 100vh;
