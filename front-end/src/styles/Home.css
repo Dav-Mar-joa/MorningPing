@@ -244,7 +244,7 @@ body {
 /* -----------------------
    Responsive Mobile Styles
 ------------------------ */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 450px) {
   .home-container {
     padding: 1.5rem 1rem;
   }
