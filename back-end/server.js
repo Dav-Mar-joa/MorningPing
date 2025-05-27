@@ -28,7 +28,7 @@ app.use(express.json());
 const cors = require('cors');
 
 app.use(cors({
-  origin: "https://morningping.onrender.com",
+  origin: "https://morningping-front.onrender.com",
   // origin: "http://localhost:3000",
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
