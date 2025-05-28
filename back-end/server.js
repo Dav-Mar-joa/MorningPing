@@ -68,7 +68,17 @@ app.post('/subscribe', express.json(), (req, res) => {
 
 const cron = require('node-cron');
 
-cron.schedule('25 14 * * *', () => {
+cron.schedule('30 15 * * *', () => {
+  const payload = JSON.stringify({
+    title: '🎉 Joyeux anniversaire !',
+    body: 'Va souhaiter un bon anniversaire à ton pote !'
+  });
+
+  subscriptions.forEach(sub => {
+    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+  });
+});
+cron.schedule('35 10,11,12,13,14,15,16,17,18 * * *', () => {
   const payload = JSON.stringify({
     title: '🎉 Joyeux anniversaire !',
     body: 'Va souhaiter un bon anniversaire à ton pote !'
