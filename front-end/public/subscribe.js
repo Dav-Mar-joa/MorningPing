@@ -1,21 +1,6 @@
-function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding)
-    .replace(/\-/g, '+')
-    .replace(/_/g, '/');
-
-  const rawData = atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
-}
 async function subscribeUser() {
   if ('serviceWorker' in navigator && 'PushManager' in window) {
     const register = await navigator.serviceWorker.register('/sw.js');
-    
 
     const subscription = await register.pushManager.subscribe({
       userVisibleOnly: true,
@@ -25,15 +10,21 @@ async function subscribeUser() {
     await fetch('/subscribe', {
       method: 'POST',
       body: JSON.stringify(subscription),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers: { 'Content-Type': 'application/json' }
     });
 
     alert('✅ Notifications activées');
+    localStorage.setItem('notif-enabled', 'true');
     document.getElementById('notif-button').style.display = 'none';
-    document.getElementById('body').style.display = 'block';
+    document.body.style.display = 'block';
   } else {
-    alert('❌ Notifications no supportées par votre navigateur');
+    alert('❌ Notifications non supportées');
   }
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('notif-enabled') === 'true') {
+    document.getElementById('notif-button')?.remove();
+    document.body.style.display = 'block';
+  }
+});
