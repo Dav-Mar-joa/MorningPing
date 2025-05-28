@@ -68,7 +68,7 @@ app.post('/subscribe', express.json(), (req, res) => {
 
 const cron = require('node-cron');
 
-cron.schedule('47 16 * * *', () => {
+cron.schedule('55 16 * * *', () => {
   const payload = JSON.stringify({
     title: '🎉 Joyeux anniversaire !',
     body: 'Va souhaiter un bon anniversaire à ton pote !'

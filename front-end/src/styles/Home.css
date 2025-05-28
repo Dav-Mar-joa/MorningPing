@@ -32,6 +32,7 @@ body {
 
   /* Overlay sombre semi-transparent pour contraste */
   position: relative;
+  /* display: none; */
 }
 
 /* body::before {

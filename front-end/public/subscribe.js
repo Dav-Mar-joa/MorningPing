@@ -32,6 +32,7 @@ async function subscribeUser() {
 
     alert('✅ Notifications activées');
     document.getElementById('notif-button').style.display = 'none';
+    document.getElementById('body').style.display = 'block';
   } else {
     alert('❌ Notifications no supportées par votre navigateur');
   }
