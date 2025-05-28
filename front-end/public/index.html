@@ -26,6 +26,37 @@
     -->
     <title>React App</title>
   </head>
+  <style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #121212;
+    color: white;
+    font-family: sans-serif;
+  }
+
+  #notif-button {
+    padding: 1em 2em;
+    font-size: 1.2em;
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  #notif-button:hover {
+    background-color: #0056b3;
+  }
+
+  #notif-button:active {
+    transform: scale(0.98);
+  }
+</style>
+
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
@@ -40,7 +71,9 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
 
-    <button onclick="subscribeUser()">Activer les notifications</button>
+    <!-- <button onclick="subscribeUser()">Activer les notifications</button> -->
+     <button id="notif-button" onclick="subscribeUser()">Activer les notifications</button>
+
 
     <script src="/subscribe.js"></script>
   </body>

@@ -31,6 +31,7 @@ async function subscribeUser() {
     });
 
     alert('✅ Notifications activées');
+    document.getElementById('notif-button').style.display = 'none';
   } else {
     alert('❌ Notifications no supportées par votre navigateur');
   }
