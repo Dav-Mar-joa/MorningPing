@@ -16,6 +16,7 @@ const eventSchema = new mongoose.Schema({
   // userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   event: { type: String, required: true },
   date: { type: Date, default: Date.now },
+  frequence: { type: String, enum: ["Anniv'",'Annuel', 'Hebdo', 'Quotidien'], default: "Anniv'" },
 });
 
 const Event = mongoose.model('Event', eventSchema);

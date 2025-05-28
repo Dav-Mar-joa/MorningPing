@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const EditEvent = () => {
   const { id } = useParams(); // Récupère l'ID depuis l'URL
-  const [eventData, setEventData] = useState({ nom: '', date: '' });
+  const [eventData, setEventData] = useState({ nom: '', date: '',frequence: "" });
    const navigate = useNavigate();
   // Simuler une récupération de données (à remplacer par une vraie requête)
   useEffect(() => {
@@ -17,7 +17,7 @@ const EditEvent = () => {
       // Exemple fictif
       const response = await fetch(`${API_URL}/api/events/${id}`);
       const data = await response.json();
-      setEventData({ nom: data.event, date: data.date });
+      setEventData({ nom: data.event, date: data.date, frequence: data.frequence })
     };
 
     fetchData();
@@ -52,24 +52,47 @@ const EditEvent = () => {
   return (
     <div className='home-container'>
       <h1>⏰ Morning Ping</h1>
+      <br/> 
+      <br/> 
       <div className="postit-list">
         <form onSubmit={handleSubmit}>
           {/* <div className="imputAddEvent"> */}
             <label>
-              Nom :
+              Evenement :
               <input className="imputAddEvent" type="text" name="nom" value={eventData.nom} onChange={handleChange} />
             </label>
             <br />
             <label>
-              Date :
+              Date à répeter:
               <input className="imputAddEvent" type="date" name="date" value={eventData.date} onChange={handleChange} />
-            </label>  
+            </label>
+            <label>
+              <br />
+              Fréquence des notifications:
+            </label>
+            
+            <select id="frequence" className="imputAddEvent" value={eventData.frequence} onChange={handleChange}>
+                <option value="Anniv'">Anniversaire</option>
+                <option value="Annuel">Annuel</option>
+                <option value="Hebdo">Hebdomadaire</option>
+                <option value="Quotidien">Quotidien</option>
+        </select>
           {/* </div> */}
-          
+          <div className='EnregistrerDel'>
+            <div className='boutons'>
+              <button className ='btn' type="submit">Enregistrer</button>
+            </div>
+            <div className='boutons'>
+              <button className ='btn-del' type="submit">
+                <img src="/delete.png" alt="Supprimer" style={{ width: '45px', height: '45px' }} />
+              </button>
+            </div>
+          </div>  
+          <Link to="/">
           <div className='boutons'>
-            <button className ='btn' type="submit">Enregistrer</button>
+            <button className ='btn' type="submit">List</button>
           </div>
-          
+          </Link>
           
         </form>
       </div>

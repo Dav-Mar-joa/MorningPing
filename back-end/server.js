@@ -71,7 +71,7 @@ app.get('/', async (req, res) => {
 });
 
 app.post('/api/events', async (req, res) => {
-  const { event, date, userId } = req.body;
+  const { event, date, userId,frequence } = req.body;
 
   if (!event) {
     return res.status(400).json({ message: 'Le champ event est requis' });
@@ -91,6 +91,7 @@ app.post('/api/events', async (req, res) => {
       // userId,
       event,
       date: date ? new Date(date) : Date.now(),
+      frequence
     });
 
     await newEvent.save();
@@ -117,13 +118,13 @@ app.get('/api/events/:id', async (req, res) => {
 });
 
 app.put('/api/events/:id', async (req, res) => {
-  const { nom, date } = req.body;
+  const { nom, date,frequence } = req.body;
   console.log("req.body", req.body);
 
   try {
     const updatedEvent = await Event.findByIdAndUpdate(
       req.params.id,
-      { event:nom, date },
+      { event:nom, date,frequence },
       { new: true }
     );
 

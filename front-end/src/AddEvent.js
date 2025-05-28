@@ -7,7 +7,9 @@ const AddEvent = () => {
   // 1. Création des états pour mémoriser les valeurs des inputs
   const [eventName, setEventName] = useState('');
   const [eventDate, setEventDate] = useState('');
-   const navigate = useNavigate();
+  const [eventFrequence, setEventFrequence] = useState("Anniv'");
+  const navigate = useNavigate();
+  const [selectedOption, setSelectedOption] = useState(''); 
 
   // 2. Fonction pour envoyer les données au backend
   const handleSubmit = async (e) => {
@@ -17,6 +19,7 @@ const AddEvent = () => {
     const data = {
       event: eventName,
       date: eventDate,
+      frequence: eventFrequence,
     };
 
 
@@ -37,6 +40,7 @@ const AddEvent = () => {
         // Succès, tu peux vider les inputs ou afficher un message
         setEventName('');
         setEventDate('');
+        setEventFrequence('');
         console.error('Événement ajouté avec succès !');
         navigate('/');
 
@@ -60,6 +64,8 @@ const AddEvent = () => {
         </button>
       </div>
       <h1>⏰ Morning Ping</h1>
+      <br/> 
+      <br/> 
       <div className="postit-list">
         {/* Inputs contrôlés avec onChange */}
         <input
@@ -78,6 +84,12 @@ const AddEvent = () => {
           value={eventDate}
           onChange={(e) => setEventDate(e.target.value)}
         />
+        <select id="frequence" className="imputAddEvent" value={eventFrequence} onChange={(e) => setEventFrequence(e.target.value)}>
+                <option value="Anniv'">Anniversaire</option>
+                <option value="Annuel">Annuel</option>
+                <option value="Hebdo">Hebdomadaire</option>
+                <option value="Quotidien">Quotidien</option>
+        </select>
         {/* Bouton pour envoyer */}
         <button onClick={handleSubmit} className="btn">
           Ajouter

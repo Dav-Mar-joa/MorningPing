@@ -57,7 +57,7 @@ body {
 
 .home-container h1 {
   font-size: 2.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0rem;
   color: #d2691e;
   text-shadow: 1px 1px 0 #fff;
 }
@@ -132,9 +132,11 @@ body {
   right: 20px;
   width: 30px;
   height: 30px;
+  /* border:2px solid #6df8a2; */
+  border:1px solid #000000;
   background: #e41717;
   border-radius: 50%;
-  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.9);
 }
 
 .postit-card:hover {
@@ -199,13 +201,42 @@ body {
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
+/* Style pour le bouton "Ajouter un del" */
+
 /* Style général des boutons */
-.btn-edit {
-  background: #ffdd57;
+.btn-del {
+  background: #c92222;
   border: none;
   border-radius: 12px;
-  padding: 1rem 1.5rem;
-  margin-right: 1rem;
+  padding: 0.5rem 0.5em;
+  font-size: 1.3rem;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  color: #5a3e00;
+  cursor: pointer;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  transform: rotate(-1deg);
+}
+
+.btn-del:hover {
+  background: #ffe97f;
+  transform: rotate(0deg) scale(1.05);
+  box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.25);
+}
+
+.btn-del:active {
+  transform: scale(0.97);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Style général des boutons */
+.btn-edit {
+  background: #f68686;
+  border: none;
+  border-radius: 12px;
+  padding: 0.5rem 0.5em;
+  margin-top: 1.3rem;
+  margin-left: 2rem;
   font-size: 1.3rem;
   font-family: 'Comic Sans MS', cursive, sans-serif;
   color: #5a3e00;
@@ -253,7 +284,7 @@ body {
 }
             
 .imputAddEvent {
-  width: 90%;
+  width: 80%;
   max-width: 350px;
   padding: 0.8rem 1rem;
   margin: 0.8rem 0;
@@ -273,6 +304,57 @@ body {
   box-shadow: 0 0 8px #d2691e;
   background-color: #fffbea;
 }
+.dateFrequence{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.frequenceAnniv{
+  border: 1px solid #5a3e00;
+  border-radius: 12px;
+  padding-bottom: 0.3rem;
+  font-size: bolder 1.2rem;
+  color: #5a3e00; 
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background-color: #8ddcf9;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
+}
+.frequenceAnnuel{
+  border: 1px solid #5a3e00;
+  border-radius: 12px;
+  padding-bottom: 0.3rem;
+  font-size: bolder 1.2rem;
+  color: #5a3e00; 
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background-color: #f1a3ee;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
+}
+.frequenceHebdo{
+  border: 1px solid #5a3e00;
+  border-radius: 12px;
+  padding-bottom: 0.3rem;
+  font-size: bolder 1.2rem;
+  color: #5a3e00; 
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background-color: #7ff065;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
+}
+.frequenceQuotidien{
+  border: 1px solid #5a3e00;
+  border-radius: 12px;
+  padding-bottom: 0.3rem;
+  font-size: bolder 1.2rem;
+  color: #5a3e00; 
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background-color: #fff8dc;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
+}
+.EnregistrerDel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+   justify-content: space-around;
+}
 
 /* -----------------------
    Responsive Mobile Styles
@@ -281,6 +363,21 @@ body {
   .home-container {
     padding: 1.5rem 1rem;
   }
+
+  .imputAddEvent {
+  width: 90%;
+  max-width: 200px;
+  padding: 0.8rem 1rem;
+  margin: 0.8rem 0;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-size: 1.2rem;
+  border: 2px solid #5a3e00;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+  background-color: #fff8dc;
+  color: #5a3e00;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
 
   
 }
