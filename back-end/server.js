@@ -79,6 +79,7 @@ cron.schedule('35 10,11,12,13,14,15,16,17,18 * * *', () => {
   });
 });
 
+console.log("date render", new Date().toLocaleString());
 
 app.get('/', async (req, res) => {
   try {
