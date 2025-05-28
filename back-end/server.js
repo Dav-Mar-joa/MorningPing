@@ -58,6 +58,28 @@ const sessionMiddleware = session({
 
 app.use(sessionMiddleware);
 
+let subscriptions = []; // ou en base de données
+
+app.post('/subscribe', express.json(), (req, res) => {
+  const sub = req.body;
+  subscriptions.push(sub);
+  res.status(201).json({});
+});
+
+const cron = require('node-cron');
+
+cron.schedule('25 14 * * *', () => {
+  const payload = JSON.stringify({
+    title: '🎉 Joyeux anniversaire !',
+    body: 'Va souhaiter un bon anniversaire à ton pote !'
+  });
+
+  subscriptions.forEach(sub => {
+    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+  });
+});
+
+
 app.get('/', async (req, res) => {
   try {
     // console.log("/ dans /")
