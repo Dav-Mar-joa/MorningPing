@@ -28,8 +28,8 @@ app.use(express.json());
 const cors = require('cors');
 
 app.use(cors({
-  origin: "https://morningping-front.onrender.com",
-  //origin: "http://localhost:3000",
+  // origin: "https://morningping-front.onrender.com",
+  origin: "http://localhost:3000",
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
@@ -64,6 +64,19 @@ app.post('/subscribe', express.json(), (req, res) => {
   const sub = req.body;
   subscriptions.push(sub);
   res.status(201).json({});
+});
+
+const cron = require('node-cron');
+
+cron.schedule('55 16 * * *', () => {
+  const payload = JSON.stringify({
+    title: '🎉 Joyeux anniversaire !',
+    body: 'Va souhaiter un bon anniversaire à ton pote !'
+  });
+
+  subscriptions.forEach(sub => {
+    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+  });
 });
 
 console.log("date render", new Date().toLocaleString());
@@ -152,20 +165,6 @@ app.put('/api/events/:id', async (req, res) => {
 
 const connectDB = require('./config/db');
 connectDB();
-
-app.get('/cron/update', async (req, res) => {
-  try {
-    console.log("✅ CRON exécuté !");
-    
-    // 👉 Ton traitement ici
-    // ex: mise à jour DB, fetch API, etc.
-
-    res.status(200).send("✅ CRON OK");
-  } catch (error) {
-    console.error("❌ Erreur CRON:", error);
-    res.status(500).send("❌ Erreur serveur");
-  }
-});
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
