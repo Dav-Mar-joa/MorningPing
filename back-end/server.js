@@ -16,6 +16,7 @@ const {encrypt, decrypt, hashed} = require('./utils/cryptOutils')
 const webpush = require('web-push');
 
 webpush.setVapidDetails(
+  'mailto:david@example.com',
   process.env.VAPID_PUBLIC_KEY,
   process.env.VAPID_PRIVATE_KEY
 );
