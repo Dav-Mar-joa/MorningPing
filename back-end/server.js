@@ -14,14 +14,14 @@ const isAuthenticated = require('./middleware/auth');
 const {encrypt, decrypt, hashed} = require('./utils/cryptOutils')
 
 const webpush = require('web-push');
-
+dotenv.config();
 webpush.setVapidDetails(
   'mailto:david@example.com',
   process.env.VAPID_PUBLIC_KEY,
   process.env.VAPID_PRIVATE_KEY
 );
 
-dotenv.config();
+
 
 const app = express();
 app.use(cookieParser());
