@@ -7,7 +7,7 @@ async function subscribeUser() {
       applicationServerKey: 'BAsqhQPsfonVsL1vUwgYMtrH8KQoUpy2YeDjp46iZaAPAA86cDlUZPaFuLs_wE_HfIDvja0lQJ5crkxaWyF-YOs'
     });
 
-    await fetch('/subscribe', {
+    await fetch('https://morningping.onrender.com/subscribe', {
       method: 'POST',
       body: JSON.stringify(subscription),
       headers: { 'Content-Type': 'application/json' }
