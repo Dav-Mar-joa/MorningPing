@@ -28,8 +28,8 @@ app.use(express.json());
 const cors = require('cors');
 
 app.use(cors({
-  origin: "https://morningping-front.onrender.com",
-  //origin: "http://localhost:3000",
+  // origin: "https://morningping-front.onrender.com",
+  origin: "http://localhost:3000",
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
@@ -153,13 +153,133 @@ app.put('/api/events/:id', async (req, res) => {
 const connectDB = require('./config/db');
 connectDB();
 
+// app.get('/cron/update', async (req, res) => {
+//   try {
+//     console.log("✅ CRON exécuté !");
+    
+//     // 👉 Ton traitement ici
+//     // ex: mise à jour DB, fetch API, etc.
+
+//     res.status(200).send("✅ CRON OK");
+//   } catch (error) {
+//     console.error("❌ Erreur CRON:", error);
+//     res.status(500).send("❌ Erreur serveur");
+//   }
+// });
+
+async function checkTodayEvents() {
+  const today = new Date();
+
+  const todayDay = today.getDate();
+  const todayMonth = today.getMonth();
+  const todayWeekDay = today.getDay(); // 0 = dimanche
+
+  const events = await Event.find();
+
+  for (const event of events) {
+    const eventDate = new Date(event.date);
+
+    const eventDay = eventDate.getDate();
+    const eventMonth = eventDate.getMonth();
+    const eventWeekDay = eventDate.getDay();
+
+    let shouldTrigger = false;
+
+    switch (event.frequence) {
+      case "Quotidien":
+        shouldTrigger = true;
+        break;
+
+      case "Hebdo":
+        if (eventWeekDay === todayWeekDay) {
+          shouldTrigger = true;
+        }
+        break;
+
+      case "Mensuel":
+        if (eventDay === todayDay) {
+          shouldTrigger = true;
+        }
+        break;
+
+      case "Annuel":
+      case "Anniv'":
+        if (eventDay === todayDay && eventMonth === todayMonth) {
+          shouldTrigger = true;
+        }
+        break;
+    }
+
+    if (shouldTrigger) {
+      console.log("🔔 Rappel :", event.event);
+
+      // 👉 ici :
+      // envoyer notif
+      // envoyer email
+      // stocker notification en DB
+    }
+  }
+}async function checkTodayEvents() {
+  const today = new Date();
+
+  const todayDay = today.getDate();
+  const todayMonth = today.getMonth();
+  const todayWeekDay = today.getDay(); // 0 = dimanche
+
+  const events = await Event.find();
+
+  for (const event of events) {
+    const eventDate = new Date(event.date);
+
+    const eventDay = eventDate.getDate();
+    const eventMonth = eventDate.getMonth();
+    const eventWeekDay = eventDate.getDay();
+
+    let shouldTrigger = false;
+
+    switch (event.frequence) {
+      case "Quotidien":
+        shouldTrigger = true;
+        break;
+
+      case "Hebdo":
+        if (eventWeekDay === todayWeekDay) {
+          shouldTrigger = true;
+        }
+        break;
+
+      case "Mensuel":
+        if (eventDay === todayDay) {
+          shouldTrigger = true;
+        }
+        break;
+
+      case "Annuel":
+      case "Anniv'":
+        if (eventDay === todayDay && eventMonth === todayMonth) {
+          shouldTrigger = true;
+        }
+        break;
+    }
+
+    if (shouldTrigger) {
+      console.log("🔔 Rappel :", event.event);
+
+      // 👉 ici :
+      // envoyer notif
+      // envoyer email
+      // stocker notification en DB
+    }
+  }
+}
 app.get('/cron/update', async (req, res) => {
+  if (req.query.secret !== process.env.CRON_SECRET) {
+    return res.status(403).send("Forbidden");
+  }
+
   try {
     console.log("✅ CRON exécuté !");
-    
-    // 👉 Ton traitement ici
-    // ex: mise à jour DB, fetch API, etc.
-
+    await checkTodayEvents();
     res.status(200).send("✅ CRON OK");
   } catch (error) {
     console.error("❌ Erreur CRON:", error);
