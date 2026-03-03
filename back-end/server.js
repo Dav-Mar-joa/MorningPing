@@ -13,6 +13,13 @@ const MongoStore = require('connect-mongo');
 const isAuthenticated = require('./middleware/auth');
 const {encrypt, decrypt, hashed} = require('./utils/cryptOutils')
 
+const webpush = require('web-push');
+
+webpush.setVapidDetails(
+  process.env.VAPID_PUBLIC_KEY,
+  process.env.VAPID_PRIVATE_KEY
+);
+
 dotenv.config();
 
 const app = express();
@@ -182,6 +189,59 @@ connectDB();
 //   }
 // });
 
+// async function checkTodayEvents() {
+//   const today = new Date();
+
+//   const todayDay = today.getDate();
+//   const todayMonth = today.getMonth();
+//   const todayWeekDay = today.getDay(); // 0 = dimanche
+
+//   const events = await Event.find();
+
+//   for (const event of events) {
+//     const eventDate = new Date(event.date);
+
+//     const eventDay = eventDate.getDate();
+//     const eventMonth = eventDate.getMonth();
+//     const eventWeekDay = eventDate.getDay();
+
+//     let shouldTrigger = false;
+
+//     switch (event.frequence) {
+//       case "Quotidien":
+//         shouldTrigger = true;
+//         break;
+
+//       case "Hebdo":
+//         if (eventWeekDay === todayWeekDay) {
+//           shouldTrigger = true;
+//         }
+//         break;
+
+//       case "Mensuel":
+//         if (eventDay === todayDay) {
+//           shouldTrigger = true;
+//         }
+//         break;
+
+//       case "Annuel":
+//       case "Anniv'":
+//         if (eventDay === todayDay && eventMonth === todayMonth) {
+//           shouldTrigger = true;
+//         }
+//         break;
+//     }
+
+//     if (shouldTrigger) {
+//       console.log("🔔 Rappel :", event.event);
+
+//       // 👉 ici :
+//       // envoyer notif
+//       // envoyer email
+//       // stocker notification en DB
+//     }
+//   }
+// }
 async function checkTodayEvents() {
   const today = new Date();
 
@@ -228,62 +288,12 @@ async function checkTodayEvents() {
     if (shouldTrigger) {
       console.log("🔔 Rappel :", event.event);
 
-      // 👉 ici :
-      // envoyer notif
-      // envoyer email
-      // stocker notification en DB
-    }
-  }
-}async function checkTodayEvents() {
-  const today = new Date();
-
-  const todayDay = today.getDate();
-  const todayMonth = today.getMonth();
-  const todayWeekDay = today.getDay(); // 0 = dimanche
-
-  const events = await Event.find();
-
-  for (const event of events) {
-    const eventDate = new Date(event.date);
-
-    const eventDay = eventDate.getDate();
-    const eventMonth = eventDate.getMonth();
-    const eventWeekDay = eventDate.getDay();
-
-    let shouldTrigger = false;
-
-    switch (event.frequence) {
-      case "Quotidien":
-        shouldTrigger = true;
-        break;
-
-      case "Hebdo":
-        if (eventWeekDay === todayWeekDay) {
-          shouldTrigger = true;
-        }
-        break;
-
-      case "Mensuel":
-        if (eventDay === todayDay) {
-          shouldTrigger = true;
-        }
-        break;
-
-      case "Annuel":
-      case "Anniv'":
-        if (eventDay === todayDay && eventMonth === todayMonth) {
-          shouldTrigger = true;
-        }
-        break;
-    }
-
-    if (shouldTrigger) {
-      console.log("🔔 Rappel :", event.event);
-
-      // 👉 ici :
-      // envoyer notif
-      // envoyer email
-      // stocker notification en DB
+      subscriptions.forEach(sub => {
+        webpush.sendNotification(sub, JSON.stringify({
+          title: "Rappel MorningPing",
+          body: event.event
+        })).catch(err => console.error("Erreur push:", err));
+});
     }
   }
 }
