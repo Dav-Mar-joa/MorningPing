@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AnniversaireCard from './AnniversaireCard';
 import './styles/Home.css';
 import { Link } from 'react-router-dom';
+import { subscribeUser } from './utils/subscribeUser';
 
 const Home = () => {
   const [events, setEvents] = useState([]);
@@ -42,6 +43,16 @@ const Home = () => {
       </div>
 
       <h1>⏰ Morning Ping 🔔</h1>
+
+      {!localStorage.getItem('notif-enabled') && (
+        <button
+          id="notif-button"
+          className="btn"
+          onClick={subscribeUser}
+        >
+          🔔 Activer les notifications
+        </button>
+      )}
 
       {/* Liste déroulante pour filtrer */}
       <div className="filtre-container">
