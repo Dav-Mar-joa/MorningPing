@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import AnniversaireCard from './AnniversaireCard';
 import './styles/Home.css';
 import { Link } from 'react-router-dom';
-import { subscribeUser } from './utils/subscribeUser';
+import { subscribeUser } from './utils/subscribeUser'; // ✅ fichier déplacé dans src/utils/
 
+// API_URL défini hors du composant pour éviter le warning useEffect
 const API_URL =
   window.location.hostname === "localhost"
     ? "http://localhost:4000"
@@ -11,11 +12,7 @@ const API_URL =
 
 const Home = () => {
   const [events, setEvents] = useState([]);
-  const [filtreFrequence, setFiltreFrequence] = useState('');
-  const [notifEnabled, setNotifEnabled] = useState(
-    localStorage.getItem('notif-enabled') === 'true' ||
-    Notification.permission === 'granted'
-  );
+  const [filtreFrequence, setFiltreFrequence] = useState(''); // '' = pas de filtre
 
   useEffect(() => {
     fetch(`${API_URL}/`, {
@@ -24,19 +21,12 @@ const Home = () => {
       .then(res => res.json())
       .then(data => setEvents(data))
       .catch(err => console.error('Erreur lors du fetch des événements :', err));
-  }, []);
+  }, []); // plus de warning, API_URL est constant
 
+  // Appliquer le filtre sur la liste
   const eventsFiltres = filtreFrequence
     ? events.filter(event => event.frequence === filtreFrequence)
     : events;
-
-  const handleActiverNotifs = async () => {
-    await subscribeUser();
-    if (Notification.permission === 'granted') {
-      localStorage.setItem('notif-enabled', 'true');
-      setNotifEnabled(true);
-    }
-  };
 
   return (
     <div className='home-container'>
@@ -51,16 +41,18 @@ const Home = () => {
 
       <h1>⏰ Morning Ping 🔔</h1>
 
-      {!notifEnabled && (
+      {/* Bouton d'activation notifications */}
+      {!localStorage.getItem('notif-enabled') && (
         <button
           id="notif-button"
           className="btn"
-          onClick={handleActiverNotifs}
+          onClick={subscribeUser}
         >
           🔔 Activer les notifications
         </button>
       )}
 
+      {/* Liste déroulante pour filtrer */}
       <div className="filtre-container">
         <select
           id="filtreFrequence"
@@ -76,6 +68,7 @@ const Home = () => {
         </select>
       </div>
 
+      {/* Liste filtrée des événements */}
       <div className="postit-list">
         {eventsFiltres.map((event, index) => (
           <AnniversaireCard
