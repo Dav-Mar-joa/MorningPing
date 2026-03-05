@@ -13,9 +13,8 @@ const Home = () => {
   const [events, setEvents] = useState([]);
   const [filtreFrequence, setFiltreFrequence] = useState('');
   const [notifEnabled, setNotifEnabled] = useState(
-    localStorage.getItem('notif-enabled') === 'true' ||
-    Notification.permission === 'granted'
-  );
+  localStorage.getItem('notif-enabled') === 'true'
+);
 
   // useEffect(() => {
   //   fetch(`${API_URL}/`, {
@@ -26,26 +25,17 @@ const Home = () => {
   //     .catch(err => console.error('Erreur lors du fetch des événements :', err));
   // }, []);
 
-  useEffect(() => {
-  // Fetch des events
+useEffect(() => {
   fetch(`${API_URL}/`, { credentials: 'include' })
     .then(res => res.json())
     .then(data => setEvents(data))
     .catch(err => console.error('Erreur fetch:', err));
 
-  // Demande automatique dès le premier chargement
-  const initNotifs = async () => {
-    if (Notification.permission === 'granted') {
-      await subscribeUser(); // Re-subscribe si déjà accordé
-      setNotifEnabled(true);
-    } else if (Notification.permission === 'default') {
-      await subscribeUser(); // Va déclencher la popup du navigateur
-      setNotifEnabled(Notification.permission === 'granted');
-    }
-    // Si 'denied' → on ne fait rien, l'user a refusé
-  };
-
-  initNotifs();
+  // Re-subscribe silencieusement si déjà accordé (pas de popup)
+  if (Notification.permission === 'granted') {
+    subscribeUser();
+    setNotifEnabled(true);
+  }
 }, []);
 
   const eventsFiltres = filtreFrequence
