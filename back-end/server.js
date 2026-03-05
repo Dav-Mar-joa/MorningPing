@@ -21,7 +21,16 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY
 );
 
+// 👇 AJOUTE CES LIGNES ICI
+const subscriptionSchema = new mongoose.Schema({
+  endpoint: String,
+  keys: {
+    p256dh: String,
+    auth: String
+  }
+});
 
+const Subscription = mongoose.model('Subscription', subscriptionSchema);
 
 const app = express();
 app.use(cookieParser());
@@ -80,8 +89,6 @@ const sessionMiddleware = session({
 });
 
 app.use(sessionMiddleware);
-
-let subscriptions = []; // ou en base de données
 
 // app.post('/subscribe', express.json(), (req, res) => {
 //   const sub = req.body;
