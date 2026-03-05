@@ -17,14 +17,36 @@ const Home = () => {
     Notification.permission === 'granted'
   );
 
+  // useEffect(() => {
+  //   fetch(`${API_URL}/`, {
+  //     credentials: 'include'
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => setEvents(data))
+  //     .catch(err => console.error('Erreur lors du fetch des événements :', err));
+  // }, []);
+
   useEffect(() => {
-    fetch(`${API_URL}/`, {
-      credentials: 'include'
-    })
-      .then(res => res.json())
-      .then(data => setEvents(data))
-      .catch(err => console.error('Erreur lors du fetch des événements :', err));
-  }, []);
+  // Fetch des events
+  fetch(`${API_URL}/`, { credentials: 'include' })
+    .then(res => res.json())
+    .then(data => setEvents(data))
+    .catch(err => console.error('Erreur fetch:', err));
+
+  // Demande automatique dès le premier chargement
+  const initNotifs = async () => {
+    if (Notification.permission === 'granted') {
+      await subscribeUser(); // Re-subscribe si déjà accordé
+      setNotifEnabled(true);
+    } else if (Notification.permission === 'default') {
+      await subscribeUser(); // Va déclencher la popup du navigateur
+      setNotifEnabled(Notification.permission === 'granted');
+    }
+    // Si 'denied' → on ne fait rien, l'user a refusé
+  };
+
+  initNotifs();
+}, []);
 
   const eventsFiltres = filtreFrequence
     ? events.filter(event => event.frequence === filtreFrequence)
