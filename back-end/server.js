@@ -83,10 +83,25 @@ app.use(sessionMiddleware);
 
 let subscriptions = []; // ou en base de données
 
-app.post('/subscribe', express.json(), (req, res) => {
+// app.post('/subscribe', express.json(), (req, res) => {
+//   const sub = req.body;
+//   subscriptions.push(sub);
+//   res.status(201).json({});
+// });
+
+// Route subscribe — sauvegarde en DB au lieu du tableau
+app.post('/subscribe', express.json(), async (req, res) => {
   const sub = req.body;
-  subscriptions.push(sub);
-  res.status(201).json({});
+  try {
+    const exists = await Subscription.findOne({ endpoint: sub.endpoint });
+    if (!exists) {
+      await Subscription.create(sub);
+    }
+    res.status(201).json({ message: 'Subscription saved' });
+  } catch (err) {
+    console.error('Erreur subscribe:', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
 });
 
 console.log("date render", new Date().toLocaleString());
@@ -289,12 +304,28 @@ async function checkTodayEvents() {
     if (shouldTrigger) {
       console.log("🔔 Rappel :", event.event);
 
-      subscriptions.forEach(sub => {
-        webpush.sendNotification(sub, JSON.stringify({
-          title: "Rappel MorningPing",
-          body: event.event
-        })).catch(err => console.error("Erreur push:", err));
-});
+//       subscriptions.forEach(sub => {
+//         webpush.sendNotification(sub, JSON.stringify({
+//           title: "Rappel MorningPing",
+//           body: event.event
+//         })).catch(err => console.error("Erreur push:", err));
+// });
+
+const allSubs = await Subscription.find();
+for (const sub of allSubs) {
+  try {
+    await webpush.sendNotification(sub, JSON.stringify({
+      title: "⏰ Morning Ping",
+      body: event.event
+    }));
+  } catch (err) {
+    // Subscription expirée → on la supprime
+    if (err.statusCode === 410) {
+      await Subscription.deleteOne({ endpoint: sub.endpoint });
+    }
+    console.error("Erreur push:", err);
+  }
+}
     }
   }
 }
