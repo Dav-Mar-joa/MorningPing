@@ -12,9 +12,11 @@ const API_URL =
 const Home = () => {
   const [events, setEvents] = useState([]);
   const [filtreFrequence, setFiltreFrequence] = useState('');
-  const [notifEnabled, setNotifEnabled] = useState(
-  localStorage.getItem('notif-enabled') === 'true'
-);
+  const [notifEnabled, setNotifEnabled] = useState(() => {
+  // Le bouton disparaît SEULEMENT si la permission est vraiment accordée ET localStorage ok
+  return localStorage.getItem('notif-enabled') === 'true' 
+    && Notification.permission === 'granted';
+});
 
   // useEffect(() => {
   //   fetch(`${API_URL}/`, {
@@ -31,10 +33,10 @@ useEffect(() => {
     .then(data => setEvents(data))
     .catch(err => console.error('Erreur fetch:', err));
 
-  // Re-subscribe silencieusement si déjà accordé (pas de popup)
-  if (Notification.permission === 'granted') {
-    subscribeUser();
-    setNotifEnabled(true);
+  // Si permission révoquée manuellement → réaffiche le bouton
+  if (Notification.permission !== 'granted') {
+    localStorage.removeItem('notif-enabled');
+    setNotifEnabled(false);
   }
 }, []);
 
