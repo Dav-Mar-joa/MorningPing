@@ -19,15 +19,7 @@ const eventSchema = new mongoose.Schema({
   frequence: { type: String, enum: ["Anniv'",'Annuel', 'Hebdo', 'Quotidien'], default: "Anniv'" },
 });
 
-// Ajoute ce schéma (ou dans models/user.js)
-const subscriptionSchema = new mongoose.Schema({
-  endpoint: String,
-  keys: {
-    p256dh: String,
-    auth: String
-  }
-});
-const Subscription = mongoose.model('Subscription', subscriptionSchema)
+
 
 const Event = mongoose.model('Event', eventSchema);
 
