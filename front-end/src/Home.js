@@ -66,7 +66,7 @@ const Home = () => {
         </button>
       </div>
 
-      <h1>⏰ Morning Ping 🔔</h1>
+      <h1>⏰ Morning Ping 2 🔔</h1>
 
       {!notifEnabled && (
         <button
