@@ -61,6 +61,13 @@ useEffect(() => {
         <button className='btn-logout'>
           <img src="/logout.png" alt="Déconnexion" style={{ width: '45px', height: '45px' }} />
         </button>
+        <button onClick={() => {
+  localStorage.clear();
+  alert('✅ LocalStorage vidé !');
+  window.location.reload();
+}}>
+  🗑️ Reset cache
+</button>
       </div>
 
       <h1>⏰ Morning Ping 🔔</h1>
