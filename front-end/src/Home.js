@@ -57,16 +57,16 @@ const Home = () => {
         <button className='btn-logout'>
           <img src="/logout.png" alt="Déconnexion" style={{ width: '45px', height: '45px' }} />
         </button>
-        <button onClick={() => {
+        {/* <button onClick={() => {
           localStorage.clear();
           alert('✅ LocalStorage vidé !');
           window.location.reload();
         }}>
           🗑️ Reset cache
-        </button>
+        </button> */}
       </div>
 
-      <h1>⏰ Morning Ping 2 🔔</h1>
+      <h1>⏰ Morning Ping 🔔</h1>
 
       {!notifEnabled && (
         <button
