@@ -223,12 +223,27 @@ async function checkTodayEvents() {
         }
         break;
 
+      // case "Annuel":
+      // case "Anniv'":
+      //   if (eventDay === todayDay && eventMonth === todayMonth ||eventDay -7 === todayDay && eventMonth === todayMonth) {
+      //     shouldTrigger = true;
+      //     const age = todayYear - eventYear;
+      //     event.event += ` (${age} ans)`;
+      //   }
+      //   break;
       case "Annuel":
       case "Anniv'":
-        if (eventDay === todayDay && eventMonth === todayMonth) {
+        const isToday = eventDay === todayDay && eventMonth === todayMonth;
+        const isOneWeekBefore = eventDay - 7 === todayDay && eventMonth === todayMonth;
+        
+        if (isToday) {
           shouldTrigger = true;
           const age = todayYear - eventYear;
-          event.event += ` (${age} ans)`;
+          event.event += ` (${age} ans) 🎂`;
+        } else if (isOneWeekBefore) {
+          shouldTrigger = true;
+          const age = todayYear - eventYear;
+          event.event += ` dans 7 jours (${age} ans) ⏳`;
         }
         break;
     }
@@ -236,22 +251,21 @@ async function checkTodayEvents() {
     if (shouldTrigger) {
       console.log("🔔 Rappel :", event.event);
 
-
-const allSubs = await Subscription.find();
-for (const sub of allSubs) {
-  try {
-    await webpush.sendNotification(sub, JSON.stringify({
-      title: "⏰ Morning Ping",
-      body: `${event.frequence} - ${event.event}`
-    }));
-  } catch (err) {
-    // Subscription expirée → on la supprime
-    if (err.statusCode === 410) {
-      await Subscription.deleteOne({ endpoint: sub.endpoint });
-    }
-    console.error("Erreur push:", err);
-  }
-}
+      const allSubs = await Subscription.find();
+      for (const sub of allSubs) {
+        try {
+          await webpush.sendNotification(sub, JSON.stringify({
+            title: "⏰ Morning Ping",
+            body: `${event.frequence} - ${event.event}`
+          }));
+        } catch (err) {
+          // Subscription expirée → on la supprime
+          if (err.statusCode === 410) {
+            await Subscription.deleteOne({ endpoint: sub.endpoint });
+          }
+          console.error("Erreur push:", err);
+        }
+      }
     }
   }
 }
