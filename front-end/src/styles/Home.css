@@ -57,8 +57,8 @@ body {
 }
 
 .home-container h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0rem;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
   color: #d2691e;
   text-shadow: 1px 1px 0 #fff;
 }
@@ -183,7 +183,7 @@ body {
   background: #ffdd57;
   border: none;
   border-radius: 12px;
-  padding: 1rem 1.5rem;
+  padding: 0.5rem 0.5rem;
   font-size: 1.3rem;
   font-family: 'Comic Sans MS', cursive, sans-serif;
   color: #5a3e00;
@@ -213,8 +213,9 @@ body {
   border-radius: 12px;
   padding: 0.5rem 0.5em;
   font-size: 1.3rem;
+  margin-left : 6rem;
   font-family: 'Comic Sans MS', cursive, sans-serif;
-  color: #5a3e00;
+  color: #deddd9;
   cursor: pointer;
   box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
   transition: all 0.2s ease;
@@ -357,6 +358,17 @@ body {
   flex-direction: row;
   align-items: center;
    justify-content: space-around;
+}
+
+.form-label {
+  width: 80%;
+  max-width: 350px;
+  text-align: left;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-size: 1.3rem;
+  color: #fff8dc;
+  font-weight: bold;
+  margin-top: 0.5rem;
 }
 
 /* -----------------------

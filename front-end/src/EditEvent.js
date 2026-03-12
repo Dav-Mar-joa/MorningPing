@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const API_URL = window.location.hostname === "localhost"
   ? "http://localhost:4000"
@@ -12,11 +12,8 @@ const EditEvent = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`${API_URL}/api/events/${id}`, {
-        credentials: 'include'
-      });
+      const response = await fetch(`${API_URL}/api/events/${id}`, { credentials: 'include' });
       const data = await response.json();
-      // Formate la date pour l'input type="date" (YYYY-MM-DD)
       const dateFormatee = data.date ? new Date(data.date).toISOString().split('T')[0] : '';
       setEventData({ nom: data.event, date: dateFormatee, frequence: data.frequence });
     };
@@ -39,7 +36,6 @@ const EditEvent = () => {
   };
 
   const handleDelete = async () => {
-    // if (!window.confirm('Supprimer cet événement ?')) return;
     await fetch(`${API_URL}/api/events/${id}`, {
       method: 'DELETE',
       credentials: 'include',
@@ -59,9 +55,9 @@ const EditEvent = () => {
       <br/>
 
       <div className="postit-list">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', gap: '0.2rem' }}>
 
-          <label>Événement :</label>
+          <label className="form-label">Événement</label>
           <input
             className="imputAddEvent"
             type="text"
@@ -70,7 +66,7 @@ const EditEvent = () => {
             onChange={handleChange}
           />
 
-          <label>Date :</label>
+          <label className="form-label">Date</label>
           <input
             className="imputAddEvent"
             type="date"
@@ -79,7 +75,7 @@ const EditEvent = () => {
             onChange={handleChange}
           />
 
-          <label>Fréquence :</label>
+          <label className="form-label">Fréquence</label>
           <select
             name="frequence"
             className="imputAddEvent"
@@ -92,11 +88,9 @@ const EditEvent = () => {
             <option value="Quotidien">Quotidien</option>
           </select>
 
-          <div className='EnregistrerDel'>
-            <button className='btn' type="submit">💾 Enregistrer</button>
-            <button className='btn-del' type="button" onClick={handleDelete}>
-              <img src="/delete.png" alt="Supprimer" style={{ width: '45px', height: '45px' }} />
-            </button>
+          <div className='EnregistrerDel' style={{ marginTop: '1.5rem' }}>
+            <button className='btn' type="submit">💾</button>
+            <button className='btn-del' type="button" onClick={handleDelete}>🗑️ </button>
           </div>
 
         </form>
