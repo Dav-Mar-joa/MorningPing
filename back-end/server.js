@@ -191,6 +191,7 @@ async function checkTodayEvents() {
 
   const todayDay = today.getDate();
   const todayMonth = today.getMonth();
+  const todayYear = today.getFullYear();
   const todayWeekDay = today.getDay(); // 0 = dimanche
 
   const events = await Event.find();
@@ -200,6 +201,7 @@ async function checkTodayEvents() {
 
     const eventDay = eventDate.getDate();
     const eventMonth = eventDate.getMonth();
+    const eventYear = eventDate.getFullYear();
     const eventWeekDay = eventDate.getDay();
 
     let shouldTrigger = false;
@@ -225,6 +227,8 @@ async function checkTodayEvents() {
       case "Anniv'":
         if (eventDay === todayDay && eventMonth === todayMonth) {
           shouldTrigger = true;
+          const age = todayYear - eventYear;
+          event.event += ` (${age} ans)`;
         }
         break;
     }
@@ -263,6 +267,16 @@ app.get('/cron/update', async (req, res) => {
   } catch (error) {
     console.error("❌ Erreur CRON:", error);
     res.status(500).send("❌ Erreur serveur");
+  }
+});
+
+app.delete('/api/events/:id', async (req, res) => {
+  try {
+    await Event.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Événement supprimé' });
+  } catch (err) {
+    console.error("Erreur suppression :", err);
+    res.status(500).json({ message: 'Erreur serveur' });
   }
 });
 
