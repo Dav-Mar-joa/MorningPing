@@ -11,7 +11,9 @@ const API_URL = window.location.hostname === "localhost"
 const Home = ({ user, onLogout }) => {
   const [events, setEvents] = useState([]);
   const [filtreFrequence, setFiltreFrequence] = useState('');
-  const [notifEnabled, setNotifEnabled] = useState(false);
+  const [notifEnabled, setNotifEnabled] = useState(
+    () => localStorage.getItem('notifEnabled') === 'true' // ← lit le localStorage dès le départ
+  );
 
   useEffect(() => {
     fetch(`${API_URL}/`, { credentials: 'include' })
@@ -22,14 +24,13 @@ const Home = ({ user, onLogout }) => {
       })
       .catch(err => console.error('Erreur fetch:', err));
 
+    // Vérifie l'état réel du navigateur au montage
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       navigator.serviceWorker.ready.then(registration => {
         registration.pushManager.getSubscription().then(subscription => {
-          if (subscription && Notification.permission === 'granted') {
-            setNotifEnabled(true);
-          } else {
-            setNotifEnabled(false);
-          }
+          const enabled = !!(subscription && Notification.permission === 'granted');
+          setNotifEnabled(enabled);
+          localStorage.setItem('notifEnabled', enabled); // ← synchronise le localStorage
         });
       });
     }
@@ -43,11 +44,13 @@ const Home = ({ user, onLogout }) => {
     await subscribeUser();
     if (Notification.permission === 'granted') {
       setNotifEnabled(true);
+      localStorage.setItem('notifEnabled', 'true'); // ← sauvegarde
     }
   };
 
   const handleLogout = async () => {
     await fetch(`${API_URL}/logout`, { method: 'POST', credentials: 'include' });
+    localStorage.removeItem('notifEnabled'); // ← nettoie à la déco
     onLogout();
   };
 

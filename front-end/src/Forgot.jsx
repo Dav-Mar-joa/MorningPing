@@ -145,7 +145,7 @@ const Forgot = () => {
             <button onClick={handleForgotPassword} className="btn" style={{ marginTop: '0.5rem' }}>
               Changer mon mot de passe
             </button>
-            <button className="btn" style={{ marginTop: '0.5rem', background: 'transparent', color: '#000000' }} onClick={() => { setMode(null); setError(''); setSuccessMsg(''); }}>
+            <button className="btn" style={{ marginTop: '0.5rem', background: '', color: '#000000' }} onClick={() => { setMode(null); setError(''); setSuccessMsg(''); }}>
               ← Retour
             </button>
           </>
