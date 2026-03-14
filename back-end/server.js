@@ -2,55 +2,34 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const path = require('path');
-const router = express.Router();
-// const User = require('./models/user');
-const { User, Event } = require('./models/user'); // adapte selon ton chemin
-const bodyParser = require('body-parser');
+const { User, Event } = require('./models/user');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bcryptjs = require('bcryptjs');
 const MongoStore = require('connect-mongo');
 const isAuthenticated = require('./middleware/auth');
-const {encrypt, decrypt, hashed} = require('./utils/cryptOutils')
-
 const webpush = require('web-push');
+const cors = require('cors');
+
 dotenv.config();
+
 webpush.setVapidDetails(
   'mailto:david@example.com',
   process.env.VAPID_PUBLIC_KEY,
   process.env.VAPID_PRIVATE_KEY
 );
 
-// 👇 AJOUTE CES LIGNES ICI
 const subscriptionSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   endpoint: String,
-  keys: {
-    p256dh: String,
-    auth: String
-  }
+  keys: { p256dh: String, auth: String }
 });
-
 const Subscription = mongoose.model('Subscription', subscriptionSchema);
 
 const app = express();
 app.use(cookieParser());
-
-app.use((req, res, next) => {
-  next();
-});
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-const cors = require('cors');
-
-// app.use(cors({
-//   // origin: "https://morningping-front.onrender.com",
-//   origin: "http://localhost:3000",
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   allowedHeaders: ['Content-Type', 'Authorization'],
-//   credentials: true
-// }));
 
 const allowedOrigins = [
   "http://localhost:3000",
@@ -58,46 +37,90 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: function(origin, callback) {
-    if(!origin || allowedOrigins.includes(origin)) callback(null, true);
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) callback(null, true);
     else callback(new Error("Not allowed by CORS"));
   },
-  methods: ['GET','POST','PUT','DELETE'],
-  allowedHeaders: ['Content-Type','Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.set('trust proxy', 1);
 
-app.set('trust proxy', 1)
+app.use(session({
+  secret: process.env.JWT_SECRET || 'default-secret',
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI,
+    dbName: 'MorningPing',
+    collectionName: 'sessions',
+  }),
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+  },
+}));
 
-const sessionMiddleware = session({
-    secret: process.env.JWT_SECRET || 'default-secret',
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI,
-        dbName: 'MorningPing', 
-        collectionName: 'production',
-    }),
-    cookie: {
-        secure: false, // Mettre true en production avec HTTPS
-        // httpOnly: true,
-        // sameSite: 'None',
-        maxAge: 30*24 * 60 * 60 * 1000, // Durée de vie des cookies (30 jour ici)
-    },
+// ── AUTH ──────────────────────────────────────────
+
+app.post('/register', async (req, res) => {
+  const { pseudo, password, confirmPassword } = req.body;
+  try {
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: 'Les mots de passe ne correspondent pas' });
+    }
+    const exists = await User.findOne({ pseudo });
+    if (exists) return res.status(400).json({ message: 'Ce login est déjà utilisé' });
+    const passwordHash = await bcryptjs.hash(password, 10);
+    const user = await User.create({ pseudo, passwordHash });
+    req.session.user = { id: user._id, pseudo: user.pseudo };
+    res.status(201).json({ message: 'Compte créé', pseudo: user.pseudo });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
 });
 
-app.use(sessionMiddleware);
+app.post('/login', async (req, res) => {
+  const { pseudo, password } = req.body;
+  try {
+    const user = await User.findOne({ pseudo });
+    if (!user) return res.status(401).json({ message: 'Login ou mot de passe incorrect' });
+    const valid = await bcryptjs.compare(password, user.passwordHash);
+    if (!valid) return res.status(401).json({ message: 'Login ou mot de passe incorrect' });
+    req.session.user = { id: user._id, pseudo: user.pseudo };
+    res.json({ message: 'Connecté', pseudo: user.pseudo });
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
 
+app.post('/logout', (req, res) => {
+  req.session.destroy();
+  res.json({ message: 'Déconnecté' });
+});
 
-// Route subscribe — sauvegarde en DB au lieu du tableau
-app.post('/subscribe', express.json(), async (req, res) => {
+app.get('/me', (req, res) => {
+  if (req.session?.user) res.json(req.session.user);
+  else res.status(401).json({ message: 'Non connecté' });
+});
+
+// ── PUSH ─────────────────────────────────────────
+
+app.post('/subscribe', async (req, res) => {
   const sub = req.body;
+  const userId = req.session?.user?.id || null;
   try {
     const exists = await Subscription.findOne({ endpoint: sub.endpoint });
     if (!exists) {
-      await Subscription.create(sub);
+      await Subscription.create({ ...sub, userId });
+    } else if (userId && !exists.userId) {
+      await Subscription.updateOne({ endpoint: sub.endpoint }, { userId });
     }
     res.status(201).json({ message: 'Subscription saved' });
   } catch (err) {
@@ -106,105 +129,88 @@ app.post('/subscribe', express.json(), async (req, res) => {
   }
 });
 
-console.log("date render", new Date().toLocaleString());
+// ── EVENTS ───────────────────────────────────────
 
-app.get('/', async (req, res) => {
+app.get('/', isAuthenticated, async (req, res) => {
   try {
-    // console.log("/ dans /")
-    const events = await Event.find().sort({ date: 1 }); // tri du plus récent au plus ancien
-    // console.log("eventes", events);
+    const events = await Event.find({ userId: req.session.user.id }).sort({ date: 1 });
     res.json(events);
   } catch (err) {
-    console.error("Erreur lors de la récupération des événements :", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
 
-app.post('/api/events', async (req, res) => {
-  const { event, date, userId,frequence } = req.body;
-
-  if (!event) {
-    return res.status(400).json({ message: 'Le champ event est requis' });
-  }
-
+app.post('/api/events', isAuthenticated, async (req, res) => {
+  const { event, date, frequence } = req.body;
+  if (!event) return res.status(400).json({ message: 'Le champ event est requis' });
   try {
-
-
     const newEvent = new Event({
-      // userId,
+      userId: req.session.user.id,
       event,
       date: date ? new Date(date) : Date.now(),
       frequence
     });
-
     await newEvent.save();
-
     res.json({ message: "Événement ajouté avec succès !" });
   } catch (err) {
-    console.error('Erreur lors de l\'ajout de l\'événement :', err);
     res.status(500).json({ message: 'Erreur serveur lors de l\'ajout' });
   }
 });
 
-app.get('/api/events/:id', async (req, res) => {
+app.get('/api/events/:id', isAuthenticated, async (req, res) => {
   try {
-    const event = await Event.findById(req.params.id);
-    console.log("event", event);
-    if (!event) {
-      return res.status(404).json({ message: 'Événement non trouvé' });
-    }
+    const event = await Event.findOne({ _id: req.params.id, userId: req.session.user.id });
+    if (!event) return res.status(404).json({ message: 'Événement non trouvé' });
     res.json(event);
   } catch (err) {
-    console.error('Erreur lors de la récupération de l’événement :', err);
     res.status(500).json({ message: 'Erreur serveur' });
   }
 });
 
-app.put('/api/events/:id', async (req, res) => {
-  const { nom, date,frequence } = req.body;
-  console.log("req.body", req.body);
-
+app.put('/api/events/:id', isAuthenticated, async (req, res) => {
+  const { nom, date, frequence } = req.body;
   try {
-    const updatedEvent = await Event.findByIdAndUpdate(
-      req.params.id,
-      { event:nom, date,frequence },
+    const updatedEvent = await Event.findOneAndUpdate(
+      { _id: req.params.id, userId: req.session.user.id },
+      { event: nom, date, frequence },
       { new: true }
     );
-
-    if (!updatedEvent) {
-      return res.status(404).json({ message: "Événement non trouvé" });
-    }
-
+    if (!updatedEvent) return res.status(404).json({ message: "Événement non trouvé" });
     res.json(updatedEvent);
   } catch (err) {
-    console.error("Erreur lors de la mise à jour :", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
 
+app.delete('/api/events/:id', isAuthenticated, async (req, res) => {
+  try {
+    await Event.findOneAndDelete({ _id: req.params.id, userId: req.session.user.id });
+    res.json({ message: 'Événement supprimé' });
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
 
-const connectDB = require('./config/db');
-connectDB();
+// ── CRON ─────────────────────────────────────────
 
 async function checkTodayEvents() {
   const today = new Date();
-
   const todayDay = today.getDate();
   const todayMonth = today.getMonth();
   const todayYear = today.getFullYear();
-  const todayWeekDay = today.getDay(); // 0 = dimanche
+  const todayWeekDay = today.getDay();
 
   const events = await Event.find();
 
   for (const event of events) {
     const eventDate = new Date(event.date);
-
     const eventDay = eventDate.getDate();
     const eventMonth = eventDate.getMonth();
     const eventYear = eventDate.getFullYear();
     const eventWeekDay = eventDate.getDay();
 
     let shouldTrigger = false;
+    let eventLabel = event.event;
 
     switch (event.frequence) {
       case "Quotidien":
@@ -212,68 +218,58 @@ async function checkTodayEvents() {
         break;
 
       case "Hebdo":
-        if (eventWeekDay === todayWeekDay) {
-          shouldTrigger = true;
-        }
+        if (eventWeekDay === todayWeekDay) shouldTrigger = true;
         break;
 
-      case "Mensuel":
-        if (eventDay === todayDay) {
-          shouldTrigger = true;
-        }
-        break;
-
-      // case "Annuel":
-      // case "Anniv'":
-      //   if (eventDay === todayDay && eventMonth === todayMonth ||eventDay -7 === todayDay && eventMonth === todayMonth) {
-      //     shouldTrigger = true;
-      //     const age = todayYear - eventYear;
-      //     event.event += ` (${age} ans)`;
-      //   }
-      //   break;
       case "Annuel":
+        if (eventDay === todayDay && eventMonth === todayMonth) shouldTrigger = true;
+        break;
+
       case "Anniv'":
-        const isToday = eventDay === todayDay && eventMonth === todayMonth;
-        const isOneWeekBefore = eventDay - 7 === todayDay && eventMonth === todayMonth;
-        
-        if (isToday) {
+        const eventThisYear = new Date(todayYear, eventMonth, eventDay);
+        const diffMs = eventThisYear - today;
+        const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+        if (diffDays === 0) {
           shouldTrigger = true;
           const age = todayYear - eventYear;
-          event.event += ` (${age} ans) 🎂`;
-        } else if (isOneWeekBefore) {
+          eventLabel += ` (${age} ans) 🎂`;
+        } else if (diffDays === 7) {
           shouldTrigger = true;
           const age = todayYear - eventYear;
-          event.event += ` dans 7 jours (${age} ans) ⏳`;
+          eventLabel += ` dans 7 jours (${age} ans) ⏳`;
         }
         break;
     }
 
     if (shouldTrigger) {
-      console.log("🔔 Rappel :", event.event);
+      console.log("🔔 Rappel :", eventLabel);
 
-      const allSubs = await Subscription.find();
-      for (const sub of allSubs) {
+      const subs = event.userId
+        ? await Subscription.find({ userId: event.userId })
+        : await Subscription.find();
+
+      for (const sub of subs) {
         try {
           await webpush.sendNotification(sub, JSON.stringify({
             title: "⏰ Morning Ping",
-            body: `${event.frequence} - ${event.event}`
+            body: `${event.frequence} - ${eventLabel}`
           }));
         } catch (err) {
-          // Subscription expirée → on la supprime
           if (err.statusCode === 410) {
             await Subscription.deleteOne({ endpoint: sub.endpoint });
           }
-          console.error("Erreur push:", err);
+          console.error("Erreur push:", err.message);
         }
       }
     }
   }
 }
+
 app.get('/cron/update', async (req, res) => {
   if (req.query.secret !== process.env.CRON_SECRET) {
     return res.status(403).send("Forbidden");
   }
-
   try {
     console.log("✅ CRON exécuté !");
     await checkTodayEvents();
@@ -284,17 +280,10 @@ app.get('/cron/update', async (req, res) => {
   }
 });
 
-app.delete('/api/events/:id', async (req, res) => {
-  try {
-    await Event.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Événement supprimé' });
-  } catch (err) {
-    console.error("Erreur suppression :", err);
-    res.status(500).json({ message: 'Erreur serveur' });
-  }
-});
+const connectDB = require('./config/db');
+connectDB();
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-    console.log(`Serveur en cours d'exécution sur le port ${PORT}`);
+  console.log(`Serveur en cours d'exécution sur le port ${PORT}`);
 });
