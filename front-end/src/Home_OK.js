@@ -4,30 +4,31 @@ import './styles/Home.css';
 import { Link } from 'react-router-dom';
 import { subscribeUser } from './utils/subscribeUser';
 
-const API_URL = window.location.hostname === "localhost"
-  ? "http://localhost:4000"
-  : "https://morningping.onrender.com";
+const API_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:4000"
+    : "https://morningping.onrender.com";
 
-const Home = ({ user, onLogout }) => {
+const Home = () => {
   const [events, setEvents] = useState([]);
   const [filtreFrequence, setFiltreFrequence] = useState('');
-  const [notifEnabled, setNotifEnabled] = useState(false);
+  const [notifEnabled, setNotifEnabled] = useState(false); // ← CHANGÉ
 
   useEffect(() => {
     fetch(`${API_URL}/`, { credentials: 'include' })
       .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) setEvents(data);
-        else setEvents([]);
-      })
+      .then(data => setEvents(data))
       .catch(err => console.error('Erreur fetch:', err));
 
+    // ← CHANGÉ : vérifie la vraie subscription navigateur, pas juste localStorage
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       navigator.serviceWorker.ready.then(registration => {
         registration.pushManager.getSubscription().then(subscription => {
           if (subscription && Notification.permission === 'granted') {
+            localStorage.setItem('notif-enabled', 'true');
             setNotifEnabled(true);
           } else {
+            localStorage.removeItem('notif-enabled');
             setNotifEnabled(false);
           }
         });
@@ -42,13 +43,9 @@ const Home = ({ user, onLogout }) => {
   const handleActiverNotifs = async () => {
     await subscribeUser();
     if (Notification.permission === 'granted') {
+      localStorage.setItem('notif-enabled', 'true');
       setNotifEnabled(true);
     }
-  };
-
-  const handleLogout = async () => {
-    await fetch(`${API_URL}/logout`, { method: 'POST', credentials: 'include' });
-    onLogout();
   };
 
   return (
@@ -57,22 +54,33 @@ const Home = ({ user, onLogout }) => {
         <Link to="/AddEvent">
           <button className='btn'>➕ Event</button>
         </Link>
-        <button className='btn-logout' onClick={handleLogout}>
+        <button className='btn-logout'>
           <img src="/logout.png" alt="Déconnexion" style={{ width: '45px', height: '45px' }} />
         </button>
+        {/* <button onClick={() => {
+          localStorage.clear();
+          alert('✅ LocalStorage vidé !');
+          window.location.reload();
+        }}>
+          🗑️ Reset cache
+        </button> */}
       </div>
 
       <h1>⏰ Morning Ping 🔔</h1>
-      {user && <p style={{ color: '#5a3e00', margin: 0 }}>👋 {user}</p>}
 
       {!notifEnabled && (
-        <button id="notif-button" className="btn" onClick={handleActiverNotifs}>
+        <button
+          id="notif-button"
+          className="btn"
+          onClick={handleActiverNotifs}
+        >
           🔔 Activer les notifications
         </button>
       )}
 
       <div className="filtre-container">
         <select
+          id="filtreFrequence"
           value={filtreFrequence}
           onChange={(e) => setFiltreFrequence(e.target.value)}
           className="imputAddEvent"

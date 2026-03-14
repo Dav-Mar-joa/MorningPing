@@ -1,61 +1,61 @@
-import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
-import Home from './Home'; // Import the Home component
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import Home from './Home';
 import AddEvent from './AddEvent';
 import EditEvent from './EditEvent';
+import Login from './Login';
+import Register from './Register';
+
+const API_URL = window.location.hostname === "localhost"
+  ? "http://localhost:4000"
+  : "https://morningping.onrender.com";
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
+}
 
 function App() {
-  
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    // Vérifie si le navigateur supporte service worker et Push API
+    // Vérifie si déjà connecté
+    fetch(`${API_URL}/me`, { credentials: 'include' })
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data) setUser(data.pseudo);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+
+    // Enregistre le service worker (sans demander la permission push automatiquement)
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       navigator.serviceWorker.register('/sw.js')
         .then(registration => {
           console.log('Service Worker enregistré', registration);
-
-          // Vérifie si déjà abonné
-          return registration.pushManager.getSubscription()
-            .then(async subscription => {
-              if (subscription) return subscription;
-
-              // Clé VAPID publique de ton .env
-              const publicVapidKey = 'BAsqhQPsfonVsL1vUwgYMtrH8KQoUpy2YeDjp46iZaAPAA86cDlUZPaFuLs_wE_HfIDvja0lQJ5crkxaWyF-YOs';
-              return registration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
-              });
-            });
         })
-        .then(subscription => {
-          // Envoie la subscription au serveur pour la stocker en DB
-          fetch('https://morningping.onrender.com/subscribe', {
-            method: 'POST',
-            body: JSON.stringify(subscription),
-            headers: { 'Content-Type': 'application/json' }
-          });
-        })
-        .catch(err => console.error('Erreur SW/Push:', err));
+        .catch(err => console.error('Erreur SW:', err));
     }
   }, []);
 
-  // Fonction utilitaire pour convertir la clé VAPID
-  function urlBase64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64 = (base64String + padding)
-      .replace(/-/g, '+')
-      .replace(/_/g, '/');
-    const rawData = window.atob(base64);
-    return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
-  }
+  if (loading) return (
+    <div style={{ textAlign: 'center', marginTop: '3rem', fontSize: '1.5rem' }}>
+      ⏳ Chargement...
+    </div>
+  );
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/AddEvent" element={<AddEvent/>} />
-        <Route path="/editEvent/:id" element={<EditEvent />} />
+        <Route path="/login" element={!user ? <Login onLogin={setUser} /> : <Navigate to="/" />} />
+        <Route path="/register" element={!user ? <Register onLogin={setUser} /> : <Navigate to="/" />} />
+        <Route path="/" element={user ? <Home user={user} onLogout={() => setUser(null)} /> : <Navigate to="/login" />} />
+        <Route path="/AddEvent" element={user ? <AddEvent /> : <Navigate to="/login" />} />
+        <Route path="/editEvent/:id" element={user ? <EditEvent /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   );
