@@ -58,7 +58,7 @@ const Login = ({ onLogin }) => {
         <Link to="/register" className="btn" style={{ marginTop: '0.5rem', textAlign: 'center', display: 'block' }}>
           Créer un compte
         </Link>
-        <Link to="/forgot" className="btn" style={{ marginTop: '0.5rem', textAlign: 'center', display: 'block', background: 'transparent', color: '#888', fontSize: '0.85rem' }}>
+        <Link to="/forgot" className="btn" style={{ marginTop: '0.5rem', textAlign: 'center', display: 'block', background: 'transparent', color: '#000000', fontSize: '0.85rem' }}>
           Login ou mot de passe oublié ?
         </Link>
       </div>
