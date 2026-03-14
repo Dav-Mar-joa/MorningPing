@@ -24,6 +24,9 @@ const Home = ({ user, onLogout }) => {
       })
       .catch(err => console.error('Erreur fetch:', err));
 
+      // ← Si déjà activé en localStorage, on ne touche à rien
+    if (localStorage.getItem('notifEnabled') === 'true') return;
+
     // Vérifie l'état réel du navigateur au montage
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       navigator.serviceWorker.ready.then(registration => {
