@@ -8,6 +8,7 @@ const API_URL = window.location.hostname === "localhost"
 
 const Register = ({ onLogin }) => {
   const [pseudo, setPseudo] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -15,16 +16,22 @@ const Register = ({ onLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (!pseudo || !email || !password || !confirmPassword) {
+      setError('Tous les champs sont obligatoires');
+      return;
+    }
     if (password !== confirmPassword) {
       setError('Les mots de passe ne correspondent pas');
       return;
     }
+
     try {
       const res = await fetch(`${API_URL}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ pseudo, password, confirmPassword }),
+        body: JSON.stringify({ pseudo, email, password }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -50,6 +57,13 @@ const Register = ({ onLogin }) => {
           onChange={(e) => setPseudo(e.target.value)}
         />
         <input
+          type="email"
+          placeholder="Email"
+          className="imputAddEvent"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
           type="password"
           placeholder="Mot de passe"
           className="imputAddEvent"
@@ -67,10 +81,8 @@ const Register = ({ onLogin }) => {
         <button onClick={handleSubmit} className="btn">
           Créer mon compte
         </button>
-        <Link to="/login">
-          <button className="btn" style={{ marginTop: '0.5rem' }}>
-            Déjà un compte ? Se connecter
-          </button>
+        <Link to="/login" className="btn" style={{ marginTop: '0.5rem', textAlign: 'center', display: 'block' }}>
+          Déjà un compte ? Se connecter
         </Link>
       </div>
     </div>

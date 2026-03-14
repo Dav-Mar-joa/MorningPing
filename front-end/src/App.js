@@ -6,6 +6,7 @@ import AddEvent from './AddEvent';
 import EditEvent from './EditEvent';
 import Login from './Login';
 import Register from './Register';
+import Forgot from './Forgot'
 
 const API_URL = window.location.hostname === "localhost"
   ? "http://localhost:4000"
@@ -56,6 +57,7 @@ function App() {
         <Route path="/" element={user ? <Home user={user} onLogout={() => setUser(null)} /> : <Navigate to="/login" />} />
         <Route path="/AddEvent" element={user ? <AddEvent /> : <Navigate to="/login" />} />
         <Route path="/editEvent/:id" element={user ? <EditEvent /> : <Navigate to="/login" />} />
+        <Route path="/forgot" element={<Forgot />} />
       </Routes>
     </Router>
   );
