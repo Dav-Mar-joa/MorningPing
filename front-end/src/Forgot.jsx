@@ -151,7 +151,7 @@ const Forgot = () => {
           </>
         )}
 
-        <Link to="/login" className="btn" style={{ marginTop: '1rem', textAlign: 'center', display: 'block', background: 'transparent', color: '#000000', fontSize: '0.85rem' }}>
+        <Link to="/login" className="btn" style={{ marginTop: '1rem', textAlign: 'center', display: 'block', background: 'transparent', color: '#000000', fontSize: '1rem' }}>
           ← Retour à la connexion
         </Link>
       </div>
