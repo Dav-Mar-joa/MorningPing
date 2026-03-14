@@ -69,15 +69,17 @@ app.use(session({
 // ── AUTH ──────────────────────────────────────────
 
 app.post('/register', async (req, res) => {
-  const { pseudo, password, confirmPassword } = req.body;
+  const { pseudo, email, password } = req.body;
   try {
-    if (password !== confirmPassword) {
-      return res.status(400).json({ message: 'Les mots de passe ne correspondent pas' });
+    if (!pseudo || !email || !password) {
+      return res.status(400).json({ message: 'Tous les champs sont obligatoires' });
     }
-    const exists = await User.findOne({ pseudo });
-    if (exists) return res.status(400).json({ message: 'Ce login est déjà utilisé' });
+    const existsPseudo = await User.findOne({ pseudo });
+    if (existsPseudo) return res.status(400).json({ message: 'Ce login est déjà utilisé' });
+    const existsEmail = await User.findOne({ email });
+    if (existsEmail) return res.status(400).json({ message: 'Cet email est déjà utilisé' });
     const passwordHash = await bcryptjs.hash(password, 10);
-    const user = await User.create({ pseudo, passwordHash });
+    const user = await User.create({ pseudo, email, passwordHash });
     req.session.user = { id: user._id, pseudo: user.pseudo };
     res.status(201).json({ message: 'Compte créé', pseudo: user.pseudo });
   } catch (err) {
@@ -95,6 +97,32 @@ app.post('/login', async (req, res) => {
     if (!valid) return res.status(401).json({ message: 'Login ou mot de passe incorrect' });
     req.session.user = { id: user._id, pseudo: user.pseudo };
     res.json({ message: 'Connecté', pseudo: user.pseudo });
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Login oublié → on cherche par email et on affiche le pseudo
+app.post('/forgot-login', async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: 'Aucun compte avec cet email' });
+    res.json({ pseudo: user.pseudo });
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Mot de passe oublié → on cherche par pseudo et on change le mdp
+app.post('/forgot-password', async (req, res) => {
+  const { pseudo, newPassword } = req.body;
+  try {
+    const user = await User.findOne({ pseudo });
+    if (!user) return res.status(404).json({ message: 'Login introuvable' });
+    const passwordHash = await bcryptjs.hash(newPassword, 10);
+    await User.updateOne({ pseudo }, { passwordHash });
+    res.json({ message: 'Mot de passe mis à jour' });
   } catch (err) {
     res.status(500).json({ message: 'Erreur serveur' });
   }

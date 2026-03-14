@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 // Modèle User simple (tu peux ajouter pseudo, email, mdp plus tard)
 const userSchema = new mongoose.Schema({
   pseudo: { type: String, required: true, unique: true },
-  // email: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
   passwordHash: { type: String, required: true },
   // autres champs possibles : theme, dateInscription, etc.
 });
