@@ -308,6 +308,10 @@ app.get('/cron/update', async (req, res) => {
   }
 });
 
+app.get('/wake', (req, res) => {
+  res.status(200).send('👋 Serveur réveillé');
+});
+
 const connectDB = require('./config/db');
 connectDB();
 
