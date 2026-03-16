@@ -309,7 +309,8 @@ app.get('/cron/update', async (req, res) => {
 });
 
 app.get('/wake', (req, res) => {
-  res.status(200).send('👋 Serveur réveillé');
+  console.log('Wake up !', new Date().toISOString());
+  res.status(200).json({ status: 'ok', time: new Date().toISOString() });
 });
 
 const connectDB = require('./config/db');
