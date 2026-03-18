@@ -281,7 +281,10 @@ async function checkTodayEvents() {
         try {
           await webpush.sendNotification(sub, JSON.stringify({
             title: "⏰ Morning Ping",
-            body: `${event.frequence} - ${eventLabel}`
+            body: `${event.frequence} - ${eventLabel}`,
+            icon: '/logo192.png',   // ← icône de la notif
+            badge: '/logo72.png'
+
           }));
         } catch (err) {
           if (err.statusCode === 410) {
