@@ -1,8 +1,16 @@
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET || 'default-secret';
+
 function isAuthenticated(req, res, next) {
-  if (req.session && req.session.user) {
-    return next();
-  } else {
-    return res.status(401).json({ message: 'Non connecté' });
+  const auth = req.headers.authorization;
+  if (!auth) return res.status(401).json({ message: 'Non authentifié' });
+  try {
+    const token = auth.split(' ')[1];
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch {
+    res.status(401).json({ message: 'Token invalide' });
   }
 }
 
