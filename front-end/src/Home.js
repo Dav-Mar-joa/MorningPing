@@ -19,7 +19,7 @@ const Home = ({ user, onLogout }) => {
   useEffect(() => {
     const token = localStorage.getItem('token'); // ← JWT
 
-    fetch(`${API_URL}/`, {
+    fetch(`${API_URL}/api/events`, {
       headers: { Authorization: `Bearer ${token}` } // ← plus de credentials
     })
       .then(res => res.json())
@@ -67,7 +67,7 @@ const Home = ({ user, onLogout }) => {
           <button className='btn'>➕ Event</button>
         </Link>
         <button className='btn-logout' onClick={handleLogout}>
-          <img src="/logout.png" alt="Déconnexion" style={{ width: '45px', height: '45px' }} />
+          <img src={process.env.PUBLIC_URL + '/logout.png'} alt="Déconnexion" style={{ width: '45px', height: '45px' }} />
         </button>
       </div>
 
