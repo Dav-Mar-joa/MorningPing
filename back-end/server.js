@@ -49,6 +49,23 @@ app.use(cors({
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('trust proxy', 1);
 
+// app.use(session({
+//   secret: process.env.JWT_SECRET || 'default-secret',
+//   resave: false,
+//   saveUninitialized: false,
+//   store: MongoStore.create({
+//     mongoUrl: process.env.MONGODB_URI,
+//     dbName: 'MorningPing',
+//     collectionName: 'sessions',
+//   }),
+//   cookie: {
+//     secure: process.env.NODE_ENV === 'production',
+//     httpOnly: true,
+//     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+//     maxAge: 30 * 24 * 60 * 60 * 1000,
+//   },
+// }));
+
 app.use(session({
   secret: process.env.JWT_SECRET || 'default-secret',
   resave: false,
@@ -59,9 +76,9 @@ app.use(session({
     collectionName: 'sessions',
   }),
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: true,      // ← forcé en dur
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    sameSite: 'none',  // ← forcé en dur
     maxAge: 30 * 24 * 60 * 60 * 1000,
   },
 }));
