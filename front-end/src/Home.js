@@ -62,17 +62,18 @@ const Home = ({ user, onLogout }) => {
 
   return (
     <div className='home-container'>
+      {/* {user && <p style={{ color: '#5a3e00', margin: 0 , fontSize: '1.2rem'}}>👋 {user}</p>} */}
       <div className='boutons'>
         <Link to="/AddEvent">
           <button className='btn'>➕ Event</button>
         </Link>
         <button className='btn-logout' onClick={handleLogout}>
-          <img src={process.env.PUBLIC_URL + '/logout.png'} alt="Déconnexion" style={{ width: '45px', height: '45px' }} />
+          <img src={process.env.PUBLIC_URL + '/logout.png'} alt="Déconnexion" style={{ width: '2rem', height: '2rem' }} />
         </button>
       </div>
 
       <h1>⏰ Morning Ping 🔔</h1>
-      {user && <p style={{ color: '#5a3e00', margin: 0 }}>👋 {user}</p>}
+      {/* {user && <p style={{ color: '#5a3e00', margin: 0 }}>👋 {user}</p>} */}
 
       {!notifEnabled && (
         <button id="notif-button" className="btn" onClick={handleActiverNotifs}>

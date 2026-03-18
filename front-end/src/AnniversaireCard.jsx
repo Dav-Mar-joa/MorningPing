@@ -22,7 +22,7 @@ const AnniversaireCard = ({id, nom, date,frequence }) => {
         </div>
       <Link to={`/editEvent/${id}`}>
         <button className='btn-edit'>
-            <img src="/edit.png" alt="Modifier" style={{ width: '25px', height: '25px' }} />
+            <img src="/edit.png" alt="Modifier" style={{ width: '20px', height: '20px' }} />
         </button>
       </Link>
       {/* <Link to="/editEvent">
