@@ -22,7 +22,7 @@ const AnniversaireCard = ({id, nom, date, frequence }) => {
       {age !== null && (
         <div style={{
           position: 'absolute',
-          top: '-12px',
+          top: '-20px',
           left: '12px',
           background: '#373333',
           color: 'white',
@@ -33,7 +33,7 @@ const AnniversaireCard = ({id, nom, date, frequence }) => {
           justifyContent: 'center',
           fontSize: '0.95rem',
           // fontWeight: 'bold',
-          border: '1px solid #000',
+          border: '1px solid #fcf8f8',
           boxShadow: '2px 2px 2px rgba(0,0,0,0.4)',
           zIndex: 2,
           whiteSpace: 'nowrap', // ← évite le retour à la ligne
@@ -45,7 +45,7 @@ const AnniversaireCard = ({id, nom, date, frequence }) => {
       <h2>{nom}</h2>
       <div className="editEvent">
         <div className="dateFrequence">
-          <p style={{ marginTop: '0.5rem' }}>{date}</p>
+          <p style={{ marginTop: '0.3rem' }}>{date}</p>
           <p className={
             frequence === "Anniv'" ? 'frequenceAnniv' :
             frequence === "Annuel" ? 'frequenceAnnuel' :
