@@ -151,7 +151,7 @@ app.post('/subscribe', async (req, res) => {
 
 // ── EVENTS ───────────────────────────────────────
 
-app.get('/', isAuthenticated, async (req, res) => {
+app.get('/api/events', isAuthenticated, async (req, res) => {
   try {
     const events = await Event.find({ userId: req.user.id }).sort({ date: 1 });
     res.json(events);
