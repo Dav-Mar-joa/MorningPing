@@ -132,10 +132,10 @@ body {
 .postit-card::before {
   content: '';
   position: absolute;
-  top: -20px;
+  top: -8px;
   right: 20px;
-  width:2.5rem;
-  height:2.5rem;
+  width:2rem;
+  height:2rem;
   /* border:2px solid #6df8a2; */
   border:1px solid #000000;
   background: #e41717;
@@ -159,7 +159,7 @@ body {
 }
 
 .postit-card p {
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin: 0;
   color: #333;
 }
@@ -241,8 +241,8 @@ body {
   border-radius: 12px;
   padding: 0.6rem 0.6rem ;
   margin-top: 3rem;
-  margin-left: 2.8rem;
-  font-size: 0.rem;
+  margin-left: 3.8rem;
+
   font-family: 'Comic Sans MS', cursive, sans-serif;
   color: #5a3e00;
   cursor: pointer;
