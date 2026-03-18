@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AnniversaireCard from './AnniversaireCard';
 import './styles/Home.css';
-import { Link } from 'react-router-dom';
+import { Link,useLocation } from 'react-router-dom';
 import { subscribeUser } from './utils/subscribeUser';
 
 const API_URL = window.location.hostname === "localhost"
@@ -10,6 +10,7 @@ const API_URL = window.location.hostname === "localhost"
 
 const Home = ({ user, onLogout }) => {
   const [events, setEvents] = useState([]);
+  const location = useLocation();
   const [filtreFrequence, setFiltreFrequence] = useState('');
   const [notifEnabled, setNotifEnabled] = useState(
     () => localStorage.getItem('notifEnabled') === 'true' // ← lit le localStorage dès le départ
@@ -37,7 +38,7 @@ const Home = ({ user, onLogout }) => {
         });
       });
     }
-  }, []);
+  }, [location]);
 
   const eventsFiltres = filtreFrequence
     ? events.filter(event => event.frequence === filtreFrequence)
