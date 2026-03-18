@@ -12,7 +12,7 @@ self.addEventListener('push', function (event) {
   const options = {
     body: data.body || "Tu as un rappel ou un anniversaire !",
     icon: '/logo192.png',
-    badge: '/logo192.png',
+    badge: '/logo72.png',
     vibrate: [200, 100, 200],
     data: {
       url: data.url || '/', // pour ouvrir une page spécifique
