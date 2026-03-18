@@ -23,7 +23,7 @@ const AnniversaireCard = ({id, nom, date, frequence }) => {
         <div style={{
           position: 'absolute',
           top: '-20px',
-          left: '12px',
+          left: '-15px',
           background: '#373333',
           color: 'white',
           borderRadius: '50px', // ← ovale
@@ -31,12 +31,13 @@ const AnniversaireCard = ({id, nom, date, frequence }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '0.95rem',
+          fontSize: '1.4rem',
           // fontWeight: 'bold',
           border: '1px solid #fcf8f8',
           boxShadow: '2px 2px 2px rgba(0,0,0,0.4)',
           zIndex: 2,
           whiteSpace: 'nowrap', // ← évite le retour à la ligne
+          rotate: '-10deg' // ← légère rotation pour l'effet "post-it"
         }}>
           {age} ans
         </div>
