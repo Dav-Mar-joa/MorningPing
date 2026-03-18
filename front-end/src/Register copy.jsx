@@ -30,11 +30,11 @@ const Register = ({ onLogin }) => {
       const res = await fetch(`${API_URL}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ pseudo, email, password }),
       });
       const data = await res.json();
       if (res.ok) {
-        localStorage.setItem('token', data.token); // ← sauvegarde le JWT
         onLogin(data.pseudo);
       } else {
         setError(data.message || 'Erreur lors de la création');

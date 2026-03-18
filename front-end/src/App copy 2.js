@@ -6,36 +6,34 @@ import AddEvent from './AddEvent';
 import EditEvent from './EditEvent';
 import Login from './Login';
 import Register from './Register';
-import Forgot from './Forgot';
+import Forgot from './Forgot'
 
 const API_URL = window.location.hostname === "localhost"
   ? "http://localhost:4000"
   : "https://morningping.onrender.com";
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
+}
 
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
-    // Vérifie si le token est encore valide
-    fetch(`${API_URL}/me`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    // Vérifie si déjà connecté
+    fetch(`${API_URL}/me`, { credentials: 'include' })
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data) setUser(data.pseudo);
-        else localStorage.removeItem('token'); // token invalide → on nettoie
         setLoading(false);
       })
       .catch(() => setLoading(false));
 
-    // Enregistre le service worker
+    // Enregistre le service worker (sans demander la permission push automatiquement)
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       navigator.serviceWorker.register('/sw.js')
         .then(registration => {

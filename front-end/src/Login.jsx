@@ -18,11 +18,11 @@ const Login = ({ onLogin }) => {
       const res = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ pseudo, password }),
       });
       const data = await res.json();
       if (res.ok) {
+        localStorage.setItem('token', data.token); // ← sauvegarde le JWT
         onLogin(data.pseudo);
       } else {
         setError(data.message || 'Erreur de connexion');

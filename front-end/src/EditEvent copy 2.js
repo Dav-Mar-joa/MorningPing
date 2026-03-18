@@ -13,10 +13,7 @@ const EditEvent = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/api/events/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await fetch(`${API_URL}/api/events/${id}`, { credentials: 'include' });
       const data = await response.json();
       const dateFormatee = data.date ? new Date(data.date).toISOString().split('T')[0] : '';
       setEventData({ nom: data.event, date: dateFormatee, frequence: data.frequence });
@@ -29,23 +26,19 @@ const EditEvent = () => {
   };
 
   const handleSubmit = async () => {
-    const token = localStorage.getItem('token');
     await fetch(`${API_URL}/api/events/${id}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(eventData),
     });
     navigate('/');
   };
 
   const handleDelete = async () => {
-    const token = localStorage.getItem('token');
     await fetch(`${API_URL}/api/events/${id}`, {
       method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` }
+      credentials: 'include',
     });
     navigate('/');
   };
@@ -61,6 +54,7 @@ const EditEvent = () => {
       <br/>
       <div className="postit-list">
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', gap: '0.2rem' }}>
+
           <label className="form-label">Événement</label>
           <input
             className="imputAddEvent"
@@ -69,6 +63,7 @@ const EditEvent = () => {
             value={eventData.nom}
             onChange={handleChange}
           />
+
           <label className="form-label">Date</label>
           <input
             className="imputAddEvent"
@@ -77,6 +72,7 @@ const EditEvent = () => {
             value={eventData.date}
             onChange={handleChange}
           />
+
           <label className="form-label">Fréquence</label>
           <select
             name="frequence"
@@ -89,10 +85,12 @@ const EditEvent = () => {
             <option value="Hebdo">Hebdomadaire</option>
             <option value="Quotidien">Quotidien</option>
           </select>
+
           <div className='EnregistrerDel' style={{ marginTop: '1.5rem' }}>
             <button className='btn' onClick={handleSubmit}>💾</button>
             <button className='btn-del' onClick={handleDelete}>🗑️</button>
           </div>
+
         </div>
       </div>
     </div>
