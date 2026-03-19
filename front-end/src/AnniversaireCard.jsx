@@ -31,7 +31,7 @@ const AnniversaireCard = ({id, nom, date, frequence }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '1.4rem',
+          fontSize: '1.1rem',
           // fontWeight: 'bold',
           border: '1px solid #fcf8f8',
           boxShadow: '2px 2px 2px rgba(0,0,0,0.4)',
@@ -43,7 +43,7 @@ const AnniversaireCard = ({id, nom, date, frequence }) => {
         </div>
       )}
 
-      <h2>{nom}</h2>
+      <h2 style={{ wordBreak: 'break-word', overflowWrap: 'break-word', lineHeight: '1', margin: '0 1 0.3rem 0',paddingTop: '0.3rem' }}>{nom}</h2>
       <div className="editEvent">
         <div className="dateFrequence">
           <p style={{ marginTop: '0.3rem',fontSize: '0.8rem' }}>{date}</p>
