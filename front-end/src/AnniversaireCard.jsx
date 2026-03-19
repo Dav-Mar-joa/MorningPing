@@ -22,7 +22,7 @@ const AnniversaireCard = ({id, nom, date, frequence }) => {
       {age !== null && (
         <div style={{
           position: 'absolute',
-          top: '-12px',
+          top: '-10px',
           left: '-15px',
           background: '#373333',
           color: 'white',
