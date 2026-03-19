@@ -43,7 +43,7 @@ const AnniversaireCard = ({id, nom, date, frequence }) => {
         </div>
       )}
 
-      <h2 style={{ wordBreak: 'break-word', overflowWrap: 'break-word', lineHeight: '1', margin: '0 1 0.3rem 0',paddingTop: '0.3rem' }}>{nom}</h2>
+      <h2 style={{ wordBreak: 'break-word', overflowWrap: 'break-word', lineHeight: '1', margin: '0 1 0.3rem 0',paddingTop: '0.4rem' , fontSize : '1.3rem'}}>{nom}</h2>
       <div className="editEvent">
         <div className="dateFrequence">
           <p style={{ marginTop: '0.3rem',fontSize: '0.8rem' }}>{date}</p>
