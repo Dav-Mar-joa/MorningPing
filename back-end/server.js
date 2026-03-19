@@ -151,9 +151,28 @@ app.post('/subscribe', async (req, res) => {
 
 // ── EVENTS ───────────────────────────────────────
 
+// app.get('/api/events', isAuthenticated, async (req, res) => {
+//   try {
+//     const events = await Event.find({ userId: req.user.id }).sort({ date: 1 });
+//     res.json(events);
+//   } catch (err) {
+//     res.status(500).json({ message: "Erreur serveur" });
+//   }
+// });
+
 app.get('/api/events', isAuthenticated, async (req, res) => {
   try {
-    const events = await Event.find({ userId: req.user.id }).sort({ date: 1 });
+    const events = await Event.find({ userId: req.user.id });
+    
+    // Tri par jour et mois uniquement (ignore l'année)
+    events.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      const moisJourA = dateA.getMonth() * 100 + dateA.getDate();
+      const moisJourB = dateB.getMonth() * 100 + dateB.getDate();
+      return moisJourA - moisJourB;
+    });
+
     res.json(events);
   } catch (err) {
     res.status(500).json({ message: "Erreur serveur" });
