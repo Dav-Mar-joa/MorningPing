@@ -94,6 +94,7 @@ body {
   opacity: 0.2;
   pointer-events: none;
   z-index: 1; /* bien derrière le contenu */
+  
 }
 
 /* Pour que le contenu passe devant la texture */
@@ -140,7 +141,7 @@ body {
   border:1px solid #000000;
   background: #e41717;
   border-radius: 50%;
-  box-shadow: 4px 4px 4px rgba(0,0,0,0.9);
+  box-shadow: 4px 4px 0px rgba(0,0,0,1);
 }
 
 .postit-card:hover {
@@ -246,7 +247,7 @@ body {
   font-family: 'Comic Sans MS', cursive, sans-serif;
   color: #5a3e00;
   cursor: pointer;
-  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.7);
   transition: all 0.2s ease;
   transform: rotate(-1deg);
 }
