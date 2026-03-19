@@ -46,7 +46,7 @@ const AnniversaireCard = ({id, nom, date, frequence }) => {
       <h2>{nom}</h2>
       <div className="editEvent">
         <div className="dateFrequence">
-          <p style={{ marginTop: '0.3rem' }}>{date}</p>
+          <p style={{ marginTop: '0.3rem',fontSize: '0.8rem' }}>{date}</p>
           <p className={
             frequence === "Anniv'" ? 'frequenceAnniv' :
             frequence === "Annuel" ? 'frequenceAnnuel' :
@@ -59,7 +59,7 @@ const AnniversaireCard = ({id, nom, date, frequence }) => {
         </div>
         <Link to={`/editEvent/${id}`}>
           <button className='btn-edit'>
-            <img src="/edit.png" alt="Modifier" style={{ width: '20px', height: '20px' }} />
+            <img src="/edit.png" alt="Modifier" style={{ width: '1rem', height: '1rem' }} />
           </button>
         </Link>
       </div>
