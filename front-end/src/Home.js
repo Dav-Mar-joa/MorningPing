@@ -85,7 +85,7 @@ const Home = ({ user, onLogout }) => {
         <select
           value={filtreFrequence}
           onChange={(e) => setFiltreFrequence(e.target.value)}
-          className="imputAddEvent"
+          className="imputAddEvent" style={{ width: '30%' }}
         >
           <option value="">Toutes</option>
           <option value="Anniv'">Anniversaire</option>

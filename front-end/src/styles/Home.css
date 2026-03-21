@@ -191,8 +191,8 @@ body {
 }
 
 .imputAddEvent {
-  width: 30%;
-  /* max-width: 260px; */
+  width: 80%;
+  max-width: 260px;
   padding: 0.5rem 1rem;
   font-family: 'Caveat', cursive;
   font-size: 1.1rem;
@@ -559,7 +559,7 @@ body {
   }
 
   .imputAddEvent {
-    width: 50%;
+    width: 90%;
     font-size: 1rem;
   }
 
