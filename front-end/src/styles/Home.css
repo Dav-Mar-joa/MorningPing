@@ -1,27 +1,36 @@
-/* -----------------------
-   Global Page Styles
------------------------- */
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-   font-family: 'Comic Sans MS', cursive, sans-serif;
-  /* background: linear-gradient(145deg, #ffe4b5, #fff8dc); */
-  background-color: #7B3F00; /* couleur base brique un peu rouille */
-  background-image:
-    linear-gradient(90deg, rgba(255,255,255,0.1) 50%, transparent 50%),
-    linear-gradient(rgba(255,255,255,0.1) 50%, transparent 50%);
-  background-size: 90px 40px;
-  background-position: 0 0, 20px 20px;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  /* padding-top: 3rem; */
+/* ================================
+   MORNING PING — Artisan Cork Board
+   Palette: warm amber, cork, ink
+================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Fraunces:ital,wght@0,300;0,600;1,300&display=swap');
+
+/* ── CSS Variables ── */
+:root {
+  --cork:        #c8975a;
+  --cork-dark:   #a07040;
+  --cork-light:  #deba8a;
+  --ink:         #1c1410;
+  --ink-soft:    #3d2e1e;
+  --cream:       #fdf6e3;
+  --yellow:      #f9e84e;
+  --yellow-warm: #f5d26b;
+  --blue-pastel: #b8d8f0;
+  --pink-pastel: #f5c6ea;
+  --green-pastel:#bef0c6;
+  --red-pin:     #c0392b;
+  --shadow-hard: 6px 8px 0 rgba(0,0,0,0.25);
+  --shadow-float:0 12px 30px rgba(0,0,0,0.22), 0 4px 8px rgba(0,0,0,0.15);
+  --radius-card: 3px;
 }
 
+/* ── Reset & Body ── */
+*, *::before, *::after { box-sizing: border-box; }
+
 body {
-  /* Couleur de fond principale ton thon (gris bleuté) */
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Caveat', cursive;
   background-color: #6df8a2;
 
   /* Pattern arabesque SVG en background */
@@ -32,382 +41,518 @@ body {
 
   /* Overlay sombre semi-transparent pour contraste */
   position: relative;
-  /* display: none; */
-}
-
-/* body::before {
-  content: "";
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  pointer-events: none;
-  background: rgba(118, 153, 189, 0.7);
-  backdrop-filter: blur(10px);
-  z-index: -1;
-} */
-
-/* -----------------------
-   Container Principal
------------------------- */
-.home-container {
-  width: 90%;
-  /* max-width: 1000px; */
-  margin: 0 auto;
-  padding: 1rem;
-  text-align: center;
-}
-
-.home-container h1 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  color: #d2691e;
-  text-shadow: 1px 1px 0 #fff;
-}
-
-/* -----------------------
-   Liste des Post-it
------------------------- */
-.postit-list {
-  position: relative; /* important pour que ::before soit bien placé */
-  border: 3px solid rgb(87, 83, 83);
-  border-radius: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  align-items: center;
-  padding: 1rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
-  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.6);
-  /* background: linear-gradient(145deg, #2c2f38, #1b4bac, #2b2f36); */
-  background: linear-gradient(145deg, #6a758a, #8a9cdc, #6273a1);
-  overflow: hidden; /* pour que la texture ne dépasse pas */
-}
-
-.postit-list::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('https://www.transparenttextures.com/patterns/dark-denim.png');
-  opacity: 0.2;
-  pointer-events: none;
-  z-index: 1; /* bien derrière le contenu */
-  
-}
-
-/* Pour que le contenu passe devant la texture */
-.postit-list > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* -----------------------
-   Carte style Post-it
------------------------- */
-.postit-card {
-  /* margin-top: 1rem; */
-  background: #fff47a;
-  width: 90%;
-  max-width: 200px;
-  padding: 1.5rem;
-  padding-top: 0.8rem;
-  padding-bottom: 0.8rem;
-  border :#000000 solid 1px;
-  border-radius: 12px;
-  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  transform: rotate(-2deg);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  position: relative;
-}
-
-.postit-card:first-child {
-    margin-top: 2rem;
-}
-.postit-card:last-child {
-    margin-bottom: 2rem;
-}
-
-.postit-card::before {
-  content: '';
-  position: absolute;
-  top: -17px;
-  right: 15px;
-  width:1.6rem;
-  height:1.6rem;
-  /* border:2px solid #6df8a2; */
-  border:1px solid #000000;
-  background: #e41717;
-  border-radius: 50%;
-  box-shadow: 4px 4px 0px rgba(0,0,0,1);
-}
-
-.postit-card:hover {
-  transform: rotate(0deg) scale(1.06);
-  box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.25);
-  background: #e6b371;
-}
-
-/* -----------------------
-   Contenu des cartes
------------------------- */
-.postit-card h2 {
-  margin: 0 0 0rem;
-  font-size: 1.5rem;
-  color: #5a3e00;
-}
-
-.postit-card p {
-  font-size: 1rem;
-  margin: 0;
-  color: #333;
-}
-
-/* Conteneur des boutons */
-.boutons {
   display: flex;
   justify-content: center;
-  gap: 4rem;
-  margin: 2rem 0;
-  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
-.editEvent{
-    display:flex;
-    flex-direction: row;
-    gap: 1rem;
+/* ── Container ── */
+.home-container {
+  width: 100%;
+  max-width: 520px;
+  padding: 2rem 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
 }
 
-/* Style général des boutons */
+/* ── Titre principal ── */
+.home-container h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 2.6rem;
+  color: var(--cream);
+  margin: 0;
+  text-align: center;
+  letter-spacing: -0.5px;
+  text-shadow:
+    2px 3px 0 var(--ink-soft),
+    0 0 30px rgba(255,220,100,0.25);
+  position: relative;
+}
+
+.home-container h1::after {
+  content: '';
+  display: block;
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--yellow-warm), transparent);
+  margin: 0.4rem auto 0;
+  border-radius: 2px;
+  opacity: 0.7;
+}
+
+/* ── Barre de boutons ── */
+.boutons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+  flex-wrap: nowrap;
+}
+
+/* ── Boutons génériques ── */
 .btn {
-  background: #ffdd57;
-  border: none;
-  border-radius: 12px;
-  padding: 0.5rem 0.5rem;
-  font-size: 1.3rem;
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  color: #5a3e00;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  padding: 0.5rem 1.2rem;
+  font-family: 'Caveat', cursive;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink);
   cursor: pointer;
-  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
+  box-shadow: var(--shadow-hard);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
   transform: rotate(-1deg);
+  letter-spacing: 0.3px;
+  position: relative;
+}
+
+.btn::before {
+  /* Punaise décorative sur le bouton */
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle at 35% 35%, #e74c3c, #8b0000);
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.4);
+  box-shadow: 1px 2px 3px rgba(0,0,0,0.5);
+  pointer-events: none;
 }
 
 .btn:hover {
-  background: #ffe97f;
-  transform: rotate(0deg) scale(1.05);
-  box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.25);
+  background: var(--yellow-warm);
+  transform: rotate(0deg) translateY(-2px);
+  box-shadow: 8px 10px 0 rgba(0,0,0,0.3);
 }
 
 .btn:active {
-  transform: scale(0.97);
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+  box-shadow: 3px 4px 0 rgba(0,0,0,0.2);
 }
 
-/* Style pour le bouton "Ajouter un del" */
-
-/* Style général des boutons */
-.btn-del {
-  background: #c92222;
-  border:none;
-  border-radius: 12px;
-  padding: 0.5rem 0.5em;
-  font-size: 1.3rem;
-  margin-left : 6rem;
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  color: #deddd9;
-  cursor: pointer;
-  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
-  transform: rotate(-1deg);
-}
-
-.btn-del:hover {
-  background: #ffe97f;
-  transform: rotate(0deg) scale(1.05);
-  box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.25);
-}
-
-.btn-del:active {
-  transform: scale(0.97);
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
-}
-
-/* Style général des boutons */
-.btn-edit {
-  background: #f68686;
-  border: 1px solid black;
-  border-radius: 12px;
-  padding: 0.6rem 0.6rem ;
-  margin-top: 1.1rem;
-  margin-left: 5.5rem;
-
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  color: #5a3e00;
-  cursor: pointer;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.7);
-  transition: all 0.2s ease;
-  transform: rotate(-1deg);
-}
-
-.btn-edit img {
-  width: 0.85rem;
-  height: 0.85rem;
-}
-
-.btn-edit:hover {
-  background: #ffe97f;
-  transform: rotate(0deg) scale(1.05);
-  box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.25);
-}
-
-.btn-edit:active {
-  transform: scale(0.97);
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
-}
-
-/* Style logout */
+/* ── Bouton Logout ── */
 .btn-logout {
-  background: #75aee2;
-  border: 1px solid #817d79;
-  border-radius: 25px;
-  padding: 0.2rem 1.3rem;
-  font-size: 1.3rem;
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  color: #5a3e00;
+  background: var(--cork-light);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
-  transform: rotate(-1deg);
+  box-shadow: var(--shadow-hard);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transform: rotate(2deg);
 }
 
 .btn-logout:hover {
-  background: #ffe97f;
-  transform: rotate(0deg) scale(1.05);
-  box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.25);
+  transform: rotate(0deg) scale(1.1);
+  box-shadow: 8px 10px 0 rgba(0,0,0,0.3);
+  background: var(--yellow-warm);
 }
 
-.btn-logout:active {
-  transform: scale(0.97);
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+.btn-logout img {
+  width: 1.4rem;
+  height: 1.4rem;
+  filter: sepia(1) contrast(1.2);
 }
-            
+
+/* ── Bouton Notif ── */
+#notif-button {
+  font-size: 1rem;
+  padding: 0.4rem 1rem;
+  background: var(--blue-pastel);
+  border-color: var(--ink-soft);
+  transform: rotate(0.5deg);
+}
+
+/* ── Select filtre ── */
+.filtre-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .imputAddEvent {
   width: 80%;
-  max-width: 350px;
+  max-width: 260px;
   padding: 0.5rem 1rem;
-  margin: 0.8rem 0;
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  font-size: 1rem;
-  border: 2px solid #5a3e00;
-  border-radius: 12px;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
-  background-color: #fff8dc;
-  color: #5a3e00;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Caveat', cursive;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink);
+  background-color: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  box-shadow: 4px 5px 0 rgba(0,0,0,0.25);
+  appearance: none;
+  cursor: pointer;
+  transform: rotate(-0.5deg);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  text-align: center;
 }
 
 .imputAddEvent:focus {
   outline: none;
-  border-color: #d2691e;
-  box-shadow: 0 0 8px #d2691e;
-  background-color: #fffbea;
+  box-shadow: 5px 7px 0 rgba(0,0,0,0.3);
+  transform: rotate(0deg);
 }
-.dateFrequence{
+
+/* ── Panneau de liège (liste) ── */
+.postit-list {
+  width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 1rem;
+  background-color: var(--cork-dark);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0.2'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(
+      95deg,
+      transparent, transparent 40px,
+      rgba(255,255,255,0.03) 40px, rgba(255,255,255,0.03) 42px
+    );
+  border-radius: 8px;
+  border: 3px solid var(--ink);
+  box-shadow:
+    inset 0 2px 8px rgba(0,0,0,0.35),
+    0 6px 20px rgba(0,0,0,0.4);
+  position: relative;
+}
+
+/* Coins vissés du panneau */
+.postit-list::before,
+.postit-list::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle at 40% 35%, #888, #333);
+  border-radius: 50%;
+  border: 2px solid #222;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.2);
+}
+
+.postit-list::before { top: 12px; left: 12px; }
+.postit-list::after  { top: 12px; right: 12px; }
+
+/* ── Cartes Post-it ── */
+.postit-card {
+  background: var(--yellow);
+  width: 85%;
+  max-width: 280px;
+  padding: 1.2rem 1.4rem 1rem;
+  border: 1.5px solid rgba(0,0,0,0.15);
+  border-radius: var(--radius-card);
+  box-shadow:
+    var(--shadow-float),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+  position: relative;
+  /* Léger pli en bas à droite */
+  transform: rotate(-1.8deg);
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1),
+              box-shadow 0.25s ease;
+  cursor: default;
+
+  /* Dégradé papier pour le réalisme */
+  background-image: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.35) 0%,
+    transparent 50%,
+    rgba(0,0,0,0.04) 100%
+  );
+}
+
+/* Alternance de couleurs de post-its */
+.postit-card:nth-child(2n)   { background-color: var(--blue-pastel); transform: rotate(1.5deg); }
+.postit-card:nth-child(3n)   { background-color: var(--pink-pastel); transform: rotate(-2.5deg); }
+.postit-card:nth-child(4n)   { background-color: var(--green-pastel); transform: rotate(1deg); }
+.postit-card:nth-child(2n) .postit-card,
+.postit-card:nth-child(3n) .postit-card,
+.postit-card:nth-child(4n) .postit-card {
+  background-image: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%);
+}
+
+/* Pli coin bas-droit */
+.postit-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 22px;
+  height: 22px;
+  background: linear-gradient(225deg, rgba(0,0,0,0.1) 50%, transparent 50%);
+  border-radius: 0 0 var(--radius-card) 0;
+}
+
+/* Punaise */
+.postit-card::before {
+  content: '';
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle at 38% 35%, #e74c3c 0%, #8b0000 70%);
+  border-radius: 50%;
+  border: 1.5px solid rgba(0,0,0,0.45);
+  box-shadow:
+    2px 3px 5px rgba(0,0,0,0.5),
+    inset 0 1px 2px rgba(255,255,255,0.3);
+  z-index: 2;
+}
+
+.postit-card:hover {
+  transform: rotate(0deg) scale(1.05) translateY(-6px) !important;
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.3),
+    0 8px 16px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+  z-index: 10;
+}
+
+/* ── Bulle âge ── */
+.age-bubble {
+  position: absolute;
+  top: -12px;
+  left: -14px;
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: 30px;
+  padding: 0.1rem 0.75rem;
+  font-family: 'Fraunces', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  box-shadow: 2px 3px 5px rgba(0,0,0,0.45);
+  z-index: 3;
+  transform: rotate(-8deg);
+  white-space: nowrap;
+}
+
+/* ── Nom ── */
+.card-nom {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: 1.45rem;
+  color: var(--ink);
+  margin: 0.5rem 0 0.7rem;
+  line-height: 1.1;
+  word-break: break-word;
+  padding-top: 0.2rem;
+}
+
+/* ── Pied de carte ── */
+.card-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
   gap: 0.5rem;
 }
-.dateFrequence p {
-  font-size : 0.85rem;
+
+.card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
-.frequenceAnniv{
-  border: 1px solid #5a3e00;
-  border-radius: 12px;
-  padding-bottom: 0.4rem;
-  padding-top: 0.4rem;
-  font-size: bolder 1.2rem;
-  color: #5a3e00; 
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  background-color: #8ddcf9;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
+
+.card-date {
+  font-family: 'Caveat', cursive;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  opacity: 0.85;
 }
-.frequenceAnnuel{
-  border: 1px solid #5a3e00;
-  border-radius: 12px;
-  padding-top: 0.4rem;
-  padding-bottom: 0.4rem;
-  font-size: bolder 1.2rem;
-  color: #5a3e00; 
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  background-color: #f1a3ee;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
+
+/* ── Bouton edit ── */
+.btn-edit {
+  background: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.6);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  flex-shrink: 0;
+  text-decoration: none;
 }
-.frequenceHebdo{
-  border: 1px solid #5a3e00;
-  border-radius: 12px;
-  padding-top: 0.4rem;
-  padding-bottom: 0.4rem;
-  font-size: bolder 1.2rem;
-  color: #5a3e00; 
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  background-color: #7ff065;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
+
+.btn-edit img {
+  width: 1rem;
+  height: 1rem;
+  filter: invert(1);
+  opacity: 1;
 }
-.frequenceQuotidien{
-  border: 1px solid #5a3e00;
-  border-radius: 12px;
-  padding-bottom: 0.4rem;
-  padding-top: 0.4rem;
-  font-size: bolder 1.2rem;
-  color: #5a3e00; 
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  background-color: #fff8dc;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
+
+.btn-edit:hover {
+  transform: scale(1.15) rotate(-5deg);
+  box-shadow: 5px 5px 0 rgba(0,0,0,0.5);
+  background: #c0392b;
+  border-color: #c0392b;
 }
+
+.btn-edit:active {
+  transform: scale(0.95);
+  box-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+}
+
+/* ── (Legacy compat) ── */
+.postit-card h2 {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: 1.45rem;
+  color: var(--ink);
+  margin: 0 0 0.3rem;
+  line-height: 1.1;
+}
+
+.postit-card p {
+  font-family: 'Caveat', cursive;
+  font-size: 1rem;
+  color: var(--ink-soft);
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* ── Badges fréquence ── */
+.frequenceAnniv,
+.frequenceAnnuel,
+.frequenceHebdo,
+.frequenceQuotidien {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 3px;
+  font-family: 'Fraunces', serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border: 1.5px solid rgba(0,0,0,0.25);
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  text-transform: uppercase;
+}
+
+.frequenceAnniv      { background: #b8d8f0; color: #0a3d62; }
+.frequenceAnnuel     { background: #f5c6ea; color: #6c1a5c; }
+.frequenceHebdo      { background: #bef0c6; color: #1a5c25; }
+.frequenceQuotidien  { background: #fff3cd; color: #7d5a00; }
+
+/* ── Boutons d'édition ── */
+.btn-del {
+  background: #c0392b;
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  padding: 0.3rem 0.7rem;
+  margin-left: 1rem;
+  font-family: 'Caveat', cursive;
+  font-size: 1rem;
+  color: var(--cream);
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+  transition: transform 0.15s ease;
+}
+
+.btn-del:hover { transform: scale(1.08); background: #e74c3c; }
+
+
+
+.editEvent {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  align-items: center;
+}
+
 .EnregistrerDel {
   display: flex;
   flex-direction: row;
   align-items: center;
-   justify-content: space-around;
+  justify-content: space-around;
 }
 
+/* ── Formulaire / Labels ── */
 .form-label {
   width: 80%;
   max-width: 350px;
   text-align: left;
-  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-family: 'Caveat', cursive;
   font-size: 1.3rem;
-  color: #fff8dc;
-  font-weight: bold;
+  color: var(--cream);
+  font-weight: 700;
   margin-top: 0.5rem;
+  letter-spacing: 0.3px;
 }
 
-/* -----------------------
-   Responsive Mobile Styles
------------------------- */
+.dateFrequence {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dateFrequence p {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ── Animation d'entrée des cartes ── */
+@keyframes cardDrop {
+  from {
+    opacity: 0;
+    transform: rotate(-4deg) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.postit-card {
+  animation: cardDrop 0.4s ease both;
+}
+
+.postit-card:nth-child(1) { animation-delay: 0.05s; }
+.postit-card:nth-child(2) { animation-delay: 0.1s; }
+.postit-card:nth-child(3) { animation-delay: 0.15s; }
+.postit-card:nth-child(4) { animation-delay: 0.2s; }
+.postit-card:nth-child(5) { animation-delay: 0.25s; }
+.postit-card:nth-child(6) { animation-delay: 0.3s; }
+.postit-card:nth-child(7) { animation-delay: 0.35s; }
+.postit-card:nth-child(n+8) { animation-delay: 0.4s; }
+
+/* ── Responsive ── */
 @media screen and (max-width: 480px) {
   .home-container {
-    padding: 1.5rem 1rem;
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .home-container h1 {
+    font-size: 2rem;
+  }
+
+  .postit-card {
+    width: 92%;
   }
 
   .imputAddEvent {
-  width: 90%;
-  max-width: 200px;
-  padding: 0.8rem 1rem;
-  margin: 0.8rem 0;
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  font-size: 1.2rem;
-  border: 2px solid #5a3e00;
-  border-radius: 12px;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
-  background-color: #fff8dc;
-  color: #5a3e00;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
+    width: 90%;
+    font-size: 1rem;
+  }
 
-  
+  .btn { font-size: 1.1rem; }
 }
-
