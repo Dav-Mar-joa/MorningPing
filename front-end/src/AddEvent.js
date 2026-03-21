@@ -54,7 +54,7 @@ const AddEvent = () => {
       <h1>⏰ Morning Ping</h1>
       <br/>
       <br/>
-      <div className="postit-list">
+      <div className="postit-list" style={{ gap: '1rem' }}>
         <label className="form-label" htmlFor="event">📝 Événement</label>
         <input
           id="event"
