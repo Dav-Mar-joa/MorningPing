@@ -65,10 +65,14 @@ const AddEvent = () => {
         />
         <input
           id="date"
-          type="date"
-          placeholder="Date"
+          type="text"
+          placeholder="Date (jj/mm/aaaa)"
           className="imputAddEvent"
           value={eventDate}
+          onFocus={(e) => e.target.type = 'date'}
+          onBlur={(e) => {
+            if (!e.target.value) e.target.type = 'text';
+          }}
           onChange={(e) => setEventDate(e.target.value)}
         />
         <select
