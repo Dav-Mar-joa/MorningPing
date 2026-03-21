@@ -51,7 +51,7 @@ const AddEvent = () => {
           <button className='btn'>← Liste</button>
         </Link>
       </div>
-      <h1>⏰ Morning Ping</h1>
+      <h1>⏰ Morning Ping 🔔</h1>
       <br/>
       <br/>
       <div className="postit-list" style={{ gap: '1rem' }}>

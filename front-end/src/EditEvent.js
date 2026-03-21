@@ -57,7 +57,7 @@ const EditEvent = () => {
           ← Retour
         </button>
       </div>
-      <h1>⏰ Morning Ping</h1>
+      <h1>⏰ Morning Ping 🔔</h1>
       <br/>
       <div className="postit-list">
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', gap: '0.2rem' }}>
