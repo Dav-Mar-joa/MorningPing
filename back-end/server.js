@@ -252,6 +252,7 @@ async function checkTodayEvents() {
     switch (event.frequence) {
       case "Quotidien": shouldTrigger = true; break;
       case "Hebdo": if (eventWeekDay === todayWeekDay) shouldTrigger = true; break;
+      case "Mensuel": if (eventDay === todayDay) shouldTrigger = true; break;
       case "Annuel": if (eventDay === todayDay && eventMonth === todayMonth) shouldTrigger = true; break;
       case "Anniv'":
         const eventThisYear = new Date(todayYear, eventMonth, eventDay);
