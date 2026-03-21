@@ -63,14 +63,19 @@ body {
   font-family: 'Fraunces', serif;
   font-weight: 600;
   font-size: 2.6rem;
-  color: var(--cream);
+  color: var(--ink);
+  padding: 0.5rem 1rem;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  border-radius: 2rem;
   margin: 0;
   text-align: center;
   letter-spacing: -0.5px;
-  text-shadow:
-    2px 3px 0 var(--ink-soft),
+  box-shadow:
+    4px 6px 0 var(--ink-soft),
     0 0 30px rgba(255,220,100,0.25);
   position: relative;
+  background-color: var(--blue-pastel)
+
 }
 
 .home-container h1::after {
