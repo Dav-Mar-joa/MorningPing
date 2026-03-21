@@ -66,6 +66,7 @@ const AddEvent = () => {
         <input
           id="date"
           type="date"
+          placeholder="Date"
           className="imputAddEvent"
           value={eventDate}
           onChange={(e) => setEventDate(e.target.value)}
