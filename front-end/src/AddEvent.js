@@ -55,26 +55,24 @@ const AddEvent = () => {
       <br/>
       <br/>
       <div className="postit-list">
+        <label className="form-label" htmlFor="event">📝 Événement</label>
         <input
           id="event"
           type="text"
-          placeholder="Evenement"
           className="imputAddEvent"
           value={eventName}
           onChange={(e) => setEventName(e.target.value)}
         />
+        <label className="form-label" htmlFor="date">📅 Date</label>
         <input
           id="date"
-          type="text"
-          placeholder="Date (jj/mm/aaaa)"
+          type="date"
           className="imputAddEvent"
           value={eventDate}
-          onFocus={(e) => e.target.type = 'date'}
-          onBlur={(e) => {
-            if (!e.target.value) e.target.type = 'text';
-          }}
           onChange={(e) => setEventDate(e.target.value)}
         />
+        <label className="form-label" htmlFor="frequence">🔄 Fréquence</label>
+
         <select
           id="frequence"
           className="imputAddEvent"
