@@ -191,8 +191,8 @@ body {
 }
 
 .imputAddEvent {
-  width: 80%;
-  max-width: 260px;
+  width: 30%;
+  /* max-width: 260px; */
   padding: 0.5rem 1rem;
   font-family: 'Caveat', cursive;
   font-size: 1.1rem;
@@ -551,7 +551,7 @@ body {
   }
 
   .home-container h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .postit-card {
@@ -559,7 +559,7 @@ body {
   }
 
   .imputAddEvent {
-    width: 90%;
+    width: 50%;
     font-size: 1rem;
   }
 
