@@ -222,7 +222,7 @@ body {
     repeating-linear-gradient(
   95deg,
   transparent, transparent 35px,
-  rgba(255,255,255,0.35) 35px, rgba(255,255,255,0.5) 37px,
+  rgba(255,255,255,0.15) 35px, rgba(255,255,255,0.2) 37px,
   transparent 37px, transparent 38px,
   rgba(0,0,0,0.15) 38px, rgba(0,0,0,0.15) 39px
 );
