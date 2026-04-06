@@ -92,6 +92,7 @@ const Home = ({ user, onLogout }) => {
           <option value="Annuel">Annuel</option>
           <option value="Hebdo">Hebdomadaire</option>
           <option value="Quotidien">Quotidien</option>
+          <option value="Mensuel">Mensuel</option>
         </select>
       </div>
 

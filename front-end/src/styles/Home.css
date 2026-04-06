@@ -442,6 +442,7 @@ body {
 /* ── Badges fréquence ── */
 .frequenceAnniv,
 .frequenceAnnuel,
+.frequenceMensuel,
 .frequenceHebdo,
 .frequenceQuotidien {
   display: inline-block;
@@ -460,6 +461,7 @@ body {
 .frequenceAnnuel     { background: #f5c6ea; color: #6c1a5c; }
 .frequenceHebdo      { background: #bef0c6; color: #1a5c25; }
 .frequenceQuotidien  { background: #fff3cd; color: #7d5a00; }
+.frequenceMensuel    { background: #ffe4b2; color: #8b4513; }
 
 /* ── Boutons d'édition ── */
 .btn-del {
